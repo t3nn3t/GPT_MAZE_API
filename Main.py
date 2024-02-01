@@ -2,6 +2,7 @@ import random as r
 from openai import OpenAI
 from Maze import Maze
 from Visualizer import Visualizer
+from maze_dataset import MazeDataset, MazeDatasetConfig
 
 
 client = OpenAI()
@@ -21,30 +22,20 @@ def ask_gpt(question):
   return completion.choices[0].message
 
 
-def get_ai_moves(answer):
-  moves = []
-  return moves
-
-
-def ai_solve_maze(maze):
-  print("Starting maze solve...")
-  print("start: ",maze.start)
-  print("exit: ",maze.start)
-  #print_maze(maze.size, maze.start, maze.exit)
-
-  print("getting ai moves...")
-  moves = get_ai_moves(maze)
-  #for move in moves:
-
-
       
   
 #maze_size = int(input("Size of the square maze? (eg.'5' -> (5x5): "))
 
 
 #test_maze = Maze(maze_size)
+  
+mazes = Maze(5,5)
 
-simulation = Visualizer()
+maze_dataset = mazes.get_dataset()
+
+simulation = Visualizer(maze_dataset[0])
+
+
 
 simulation.start_simul()
 

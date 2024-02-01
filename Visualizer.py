@@ -2,20 +2,25 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from itertools import count
 
+from maze_dataset.plotting import MazePlot
+from maze_dataset.tokenization import MazeTokenizer, TokenizationMode
+from maze_dataset.dataset.rasterized import process_maze_rasterized_input_target
+
 class Visualizer:
-    def __init__(self):
-        
-        plt.style.use('fivethirtyeight')
+    def __init__(self, s_maze):
+        self.maze = s_maze
 
     def start_simul(self):
         self.draw_window()
 
 
     def draw_window(self):
-        x_vals = [0,1,2,3,4,5]
-        y_vals = [0,1,2,3,4,5]
         print("plotting...")
-        plt.plot(x_vals, y_vals)
+        
+        input, target = process_maze_rasterized_input_target(self.maze)
+        fig, ax = plt.subplots(1, 2)
+        ax[0].imshow(input)
+        ax[1].imshow(target)
 
         plt.tight_layout()
         plt.show()

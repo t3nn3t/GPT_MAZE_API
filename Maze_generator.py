@@ -1,5 +1,4 @@
 
-# %%
 import matplotlib.pyplot as plt # keep this import for CI to work
 from zanj import ZANJ # saving/loading data
 from muutils.mlutils import pprint_summary # pretty printing as json
@@ -24,9 +23,10 @@ print(MAZE_DATASET_CONFIGS.keys())
 LOCAL_DATA_PATH: str = "mazes/"
 zanj: ZANJ = ZANJ(external_list_threshold=256)
 
+
 cfg: MazeDatasetConfig = MazeDatasetConfig(
-	name="test_001", # name is only for you to keep track of things
-	grid_n=5, # number of rows/columns in the lattice
+	name="test_002", # name is only for you to keep track of things
+	grid_n=6, # number of rows/columns in the lattice
 	n_mazes=4, # number of mazes to generate
 	maze_ctor=LatticeMazeGenerators.gen_dfs, # algorithm to generate the maze
     # there are a few more arguments here, to be discussed later
@@ -39,24 +39,12 @@ print(cfg.to_fname())
 
 
 # to create a dataset, just call MazeDataset.from_config
-dataset: MazeDataset = MazeDataset.from_config(
-    # your config
-	cfg,
-    # and all this below is completely optional
-	do_download=False,
-	load_local=False,
-	do_generate=True,
-    save_local=True,
-	local_base_path=LOCAL_DATA_PATH,
-	verbose=True,
-	zanj=zanj,
-	gen_parallel=False, # parallel generation has overhead, not worth it unless you're doing a lot of mazes
-)
+dataset: MazeDataset = MazeDataset.from_config(cfg,local_base_path=LOCAL_DATA_PATH, do_generate=False)
 
-# %%
-plot_dataset_mazes(dataset, count=None) # for large datasets, set the count to some int to just plot the first few
+#plot_dataset_mazes(dataset, count=None) # for large datasets, set the count to some int to just plot the first few
 
-# %%
+
+
 maze: SolvedMaze = dataset[0]
 
 # first, initialize a tokenizer -- more about this in the `notebooks/demo_tokenization.ipynb` notebook
@@ -67,11 +55,8 @@ maze_tok = maze.as_tokens(maze_tokenizer=tokenizer)
 print("\nRaw tokens:\n")
 print(" ".join(maze_tok))
 
-# %%
 print("\nColored tokens, raw html:\n")
 print(color_maze_tokens_AOTP(maze_tok, fmt="html"))
 
 
 
-
-# %%
