@@ -1,6 +1,7 @@
 import random as r
 from openai import OpenAI
 from Maze import Maze
+from Visualizer import Visualizer
 
 
 client = OpenAI()
@@ -38,16 +39,22 @@ def ai_solve_maze(maze):
 
       
   
-maze_size = int(input("Size of the square maze? (eg.'5' -> (5x5): "))
+#maze_size = int(input("Size of the square maze? (eg.'5' -> (5x5): "))
 
 
-test_maze = Maze(maze_size)
+#test_maze = Maze(maze_size)
 
-print("Solve the following maze: Your Starting coordinate is",test_maze.start,". Your Exit coordinate is",test_maze.exit,". The Size of the maze is",test_maze.size,".")
+simulation = Visualizer()
 
-test_maze.print_maze()
+simulation.start_simul()
 
-print(instruction)
+
+
+#print("Solve the following maze: Your Starting coordinate is",test_maze.start,". Your Exit coordinate is",test_maze.exit,". The Size of the maze is",test_maze.size,".")
+
+#test_maze.print_maze()
+
+#print(instruction)
 
 
 
