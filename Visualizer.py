@@ -3,6 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import re
 import numpy as np
+from matplotlib import transforms
+from matplotlib.transforms import Affine2D
 
 
 
@@ -36,7 +38,8 @@ class Visualizer:
 
 
     def set_style(self):
-        plt.style.use("dark_background")
+        #plt.style.use("dark_background")
+        return 0
 
         
 
@@ -44,10 +47,14 @@ class Visualizer:
     def draw_window(self):
         print("plotting...")
         
-        
+        tr = Affine2D().rotate_deg(-90)
+        moveright = Affine2D().translate(0.0, 23.0)
+        scale = Affine2D().scale(1.0,1.0)
+
+
         self.ax[0].imshow(self.maze_dataset[0].as_pixels())
         self.ax[0].axis('off')
-        self.ax[1].imshow(self.input)
+        self.ax[1].imshow(self.input, transform= tr + moveright + scale + self.ax[1].transData)
         self.ax[1].axis('off')
 
 
@@ -78,13 +85,21 @@ class Visualizer:
 
         # Get the x-axis and y-axis limits of ax[1]
         xlim = self.ax[1].get_xlim()
+        ylim = self.ax[1].get_ylim()
 
         # Calculate width and height
         width = xlim[1] - xlim[0]
-        unit = width/self.mazes.get_size()
-        print(unit*5)
+        unit = width/((self.mazes.get_size()*2)+1)
+        
+        OFFSET = 0.5
+        MAZE_RATIO = 11/5
+        # flip y because the maze coordinates are inversed
+        x = move[0] * (MAZE_RATIO)
+        y = (4 - move[1]) * (MAZE_RATIO)
 
-        self.ax[1].scatter(unit*5,unit*5, color='red', marker='o', label='New Point')
+        #FIX PLOTTING POSITIONS, i think unit is wrong
+
+        self.ax[1].scatter((unit*10)+OFFSET,(unit*10)+OFFSET, color='red', marker='o', label='New Point')
         plt.draw()
 
 
