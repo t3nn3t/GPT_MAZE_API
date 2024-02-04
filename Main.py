@@ -5,6 +5,7 @@ from Visualizer import Visualizer
 from Response_handler import Response_handler as rh
 
 
+
 client = OpenAI()
 
 f = open("maze_instruction_v2.0", "r")

@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use('Qt5Agg')
 from matplotlib import patches
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -22,6 +24,7 @@ class Visualizer:
         self.input, self.target = process_maze_rasterized_input_target(self.maze_dataset[0])
         self.fig, self.ax = plt.subplots(1, 4, figsize=(12, 5))
 
+
     def view_paths(self, gpt_path):
         self.draw_window()
 
@@ -31,14 +34,14 @@ class Visualizer:
         for move in gpt_path:
             self.display_move(move, pos)
             pos += spacing
-            plt.pause(0.3)
+            plt.pause(1)
 
         plt.show()
 
 
 
     def set_style(self):
-        #plt.style.use("dark_background")
+        plt.style.use("dark_background")
         return 0
 
         
@@ -73,9 +76,12 @@ class Visualizer:
 
         self.ax[3].text(text_pos[0]-0.5, text_pos[1], response_head, ha='left', va='top', fontsize=8, fontname='monospace', wrap=True)
         self.ax[3].axis('off')
+        #plt.tight_layout()
+        plt.ion()
+        plt.show(block=False)
 
-        plt.tight_layout()
-        plt.draw()
+        
+
 
 
     
@@ -89,7 +95,11 @@ class Visualizer:
 
         # Calculate width and height
         width = xlim[1] - xlim[0]
-        unit = width/((self.mazes.get_size()*2)+1)
+        unit = width/((self.mazes.get_size()*2))
+        print(width)
+        print(unit)
+        print(unit*10)
+        
         
         OFFSET = 0.5
         MAZE_RATIO = 11/5
@@ -99,7 +109,7 @@ class Visualizer:
 
         #FIX PLOTTING POSITIONS, i think unit is wrong
 
-        self.ax[1].scatter((unit*10)+OFFSET,(unit*10)+OFFSET, color='red', marker='o', label='New Point')
+        self.ax[1].scatter((unit*1)+OFFSET,(unit*1)+OFFSET, color='red', marker='o', label='New Point')
         plt.draw()
 
 
