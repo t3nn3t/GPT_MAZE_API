@@ -34,14 +34,14 @@ class Visualizer:
         for move in gpt_path:
             self.display_move(move, pos)
             pos += spacing
-            plt.pause(1)
+            plt.pause(0.3)
 
         plt.show()
 
 
 
     def set_style(self):
-        plt.style.use("dark_background")
+        #plt.style.use("dark_background")
         return 0
 
         
@@ -51,13 +51,14 @@ class Visualizer:
         print("plotting...")
         
         tr = Affine2D().rotate_deg(-90)
-        moveright = Affine2D().translate(0.0, 23.0)
-        scale = Affine2D().scale(1.0,1.0)
+        moveax1= Affine2D().translate(0.0, 10.0)
+        moveax2= Affine2D().translate(0.0, 23.0)
+        #scale = Affine2D().scale(1.0,1.0)
 
 
-        self.ax[0].imshow(self.maze_dataset[0].as_pixels())
+        self.ax[0].imshow(self.maze_dataset[0].as_pixels(), transform= tr + moveax1 + self.ax[0].transData)
         self.ax[0].axis('off')
-        self.ax[1].imshow(self.input, transform= tr + moveright + scale + self.ax[1].transData)
+        self.ax[1].imshow(self.input, transform= tr + moveax2 + self.ax[1].transData)
         self.ax[1].axis('off')
 
 
@@ -76,9 +77,8 @@ class Visualizer:
 
         self.ax[3].text(text_pos[0]-0.5, text_pos[1], response_head, ha='left', va='top', fontsize=8, fontname='monospace', wrap=True)
         self.ax[3].axis('off')
-        #plt.tight_layout()
-        plt.ion()
-        plt.show(block=False)
+        plt.tight_layout()
+        plt.draw()
 
         
 
@@ -89,27 +89,17 @@ class Visualizer:
         text = str(move)
         self.ax[3].text(-0.4, 1-pos, text, ha='left', va='top', fontsize=8, fontname='monospace', wrap=True)
 
-        # Get the x-axis and y-axis limits of ax[1]
-        xlim = self.ax[1].get_xlim()
-        ylim = self.ax[1].get_ylim()
-
-        # Calculate width and height
-        width = xlim[1] - xlim[0]
-        unit = width/((self.mazes.get_size()*2))
-        print(width)
-        print(unit)
-        print(unit*10)
-        
-        
+        MAZE_RATIO = 2.0
+        UNIT = 2.0 * MAZE_RATIO
+        BORDER_SIZE = 3.0
         OFFSET = 0.5
-        MAZE_RATIO = 11/5
         # flip y because the maze coordinates are inversed
-        x = move[0] * (MAZE_RATIO)
-        y = (4 - move[1]) * (MAZE_RATIO)
+        x = move[0] 
+        y = (4 - move[1])
 
         #FIX PLOTTING POSITIONS, i think unit is wrong
 
-        self.ax[1].scatter((unit*1)+OFFSET,(unit*1)+OFFSET, color='red', marker='o', label='New Point')
+        self.ax[1].scatter(BORDER_SIZE+(UNIT*x)+OFFSET,BORDER_SIZE+(UNIT*y)+OFFSET,s=40.0,color='blue', marker='o', label='New Point')
         plt.draw()
 
 
