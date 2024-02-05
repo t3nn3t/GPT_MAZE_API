@@ -18,15 +18,14 @@ class Visualizer:
     def __init__(self, s_maze):
         self.mazes = s_maze
         self.maze_dataset = self.mazes.get_dataset()
-        self.maze_adjlist = self.get_clean_adjlist(self.mazes.get_adjlist(self.maze_dataset[0]))
         self.set_style()
-
-        self.input, self.target = process_maze_rasterized_input_target(self.maze_dataset[0])
         self.fig, self.ax = plt.subplots(1, 4, figsize=(12, 5))
 
 
-    def view_paths(self, gpt_path):
-        self.draw_window()
+
+
+    def view_paths(self, gpt_path, index):
+        self.draw_window(index)
 
         pos = 0.15
         spacing = 0.7/len(gpt_path)
@@ -34,7 +33,7 @@ class Visualizer:
         for move in gpt_path:
             self.display_move(move, pos)
             pos += spacing
-            plt.pause(0.3)
+            plt.pause(0.5)
 
         plt.show()
 
@@ -47,18 +46,32 @@ class Visualizer:
         
 
 
-    def draw_window(self):
+    def draw_window(self, index):
         print("plotting...")
+
+        maze_size = self.mazes.get_size()
         
         tr = Affine2D().rotate_deg(-90)
-        moveax1= Affine2D().translate(0.0, 10.0)
-        moveax2= Affine2D().translate(0.0, 23.0)
-        #scale = Affine2D().scale(1.0,1.0)
+        moveax1 = Affine2D().translate(0.0, 0.0)
+        moveax2 = Affine2D().translate(0.0, 0.0)
+
+        if (maze_size==5):
+            moveax1= Affine2D().translate(0.0, 10.0)
+            moveax2= Affine2D().translate(0.0, 23.0)
+        if (maze_size==4):
+            moveax1= Affine2D().translate(0.0, 8.0)
+            moveax2= Affine2D().translate(0.0, 19.0)
+        if (maze_size==3):
+            moveax1= Affine2D().translate(0.0, 6.0)
+            moveax2= Affine2D().translate(0.0, 15.0)
+        
+        input, target = process_maze_rasterized_input_target(self.maze_dataset[index])
+        
 
 
-        self.ax[0].imshow(self.maze_dataset[0].as_pixels(), transform= tr + moveax1 + self.ax[0].transData)
+        self.ax[0].imshow(self.maze_dataset[index].as_pixels(), transform= tr + moveax1 + self.ax[0].transData)
         self.ax[0].axis('off')
-        self.ax[1].imshow(self.input, transform= tr + moveax2 + self.ax[1].transData)
+        self.ax[1].imshow(input, transform= tr + moveax2 + self.ax[1].transData)
         self.ax[1].axis('off')
 
 
@@ -69,7 +82,8 @@ class Visualizer:
 
 
         # Wrap the text based on the width of the rectangle
-        adj_text = '\n'.join(self.maze_adjlist)
+        adj_list = self.get_clean_adjlist(self.mazes.get_adjlist(self.maze_dataset[index]))
+        adj_text = '\n'.join(adj_list)
         response_head = '\n'.join(response)
 
         self.ax[2].text(text_pos[0], text_pos[1], adj_text, ha='left', va='top', fontsize=8, fontname='monospace', wrap=True)
@@ -95,7 +109,7 @@ class Visualizer:
         OFFSET = 0.5
         # flip y because the maze coordinates are inversed
         x = move[0] 
-        y = (4 - move[1])
+        y = ((self.mazes.get_size() - 1) - move[1])
 
         #FIX PLOTTING POSITIONS, i think unit is wrong
 
@@ -105,8 +119,8 @@ class Visualizer:
 
 
     def get_clean_adjlist(self, adj_list_prev):
-
         adj_list = ["Adjency List: "] + re.split(" ; ",adj_list_prev)
+        
         adj_list[1] = adj_list[1].replace("<ADJLIST_START> ",'\n')
         
         end_index = next(i for i, v in enumerate(adj_list) if '<ADJLIST_END>' in v)
