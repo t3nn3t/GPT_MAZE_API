@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import re
 import numpy as np
 from matplotlib import transforms
-from matplotlib.transforms import Affine2D
+from matplotlib.transforms import Affine2D, Transform
 
 
 
@@ -30,12 +30,31 @@ class Visualizer:
         pos = 0.15
         spacing = 0.7/len(gpt_path)
         
+        adjacency_dict = self.mazes.get_adjacency_dict(self.maze_dataset[index])
+        prev_move = 0
+        still_legal = True
+        
         for move in gpt_path:
-            self.display_move(move, pos)
+            legal = self.check_legal(prev_move, move, adjacency_dict)
+            if not legal:
+                still_legal = False
+            self.display_move(move, pos, legal)
             pos += spacing
-            plt.pause(0.5)
+            prev_move = move
+            plt.pause(0.1)
 
+        if still_legal:
+            self.display_success(len(gpt_path)-1)
+            print("-----MAZE SOLVED SUCCESSFULLY-----")
+            print("\nMOVES USE: "+ str(len(gpt_path)-1))
+            
+        else:
+            self.display_fail()
+            print("-----FAILED TO SOLVE MAZE-----")
+        
         plt.show()
+
+        
 
 
 
@@ -43,11 +62,13 @@ class Visualizer:
         #plt.style.use("dark_background")
         return 0
 
-        
 
 
     def draw_window(self, index):
         print("plotting...")
+
+        
+
 
         maze_size = self.mazes.get_size()
         
@@ -91,15 +112,14 @@ class Visualizer:
 
         self.ax[3].text(text_pos[0]-0.5, text_pos[1], response_head, ha='left', va='top', fontsize=8, fontname='monospace', wrap=True)
         self.ax[3].axis('off')
+
+
         plt.tight_layout()
         plt.draw()
 
         
-
-
-
     
-    def display_move(self, move, pos):
+    def display_move(self, move, pos, legal):
         text = str(move)
         self.ax[3].text(-0.4, 1-pos, text, ha='left', va='top', fontsize=8, fontname='monospace', wrap=True)
 
@@ -111,10 +131,39 @@ class Visualizer:
         x = move[0] 
         y = ((self.mazes.get_size() - 1) - move[1])
 
-        #FIX PLOTTING POSITIONS, i think unit is wrong
-
-        self.ax[1].scatter(BORDER_SIZE+(UNIT*x)+OFFSET,BORDER_SIZE+(UNIT*y)+OFFSET,s=40.0,color='blue', marker='o', label='New Point')
+        if (legal):
+            self.ax[1].scatter(BORDER_SIZE+(UNIT*x)+OFFSET,BORDER_SIZE+(UNIT*y)+OFFSET,s=40.0,color='blue', marker='o', label='New Point', alpha = 0.4)
+        else:
+            self.ax[1].scatter(BORDER_SIZE+(UNIT*x)+OFFSET,BORDER_SIZE+(UNIT*y)+OFFSET,s=40.0,color='orange', marker='o', label='New Point', alpha = 0.4)
+        
         plt.draw()
+
+
+    def check_legal(self, prev_move, move, adj_dict):
+        
+
+        if (prev_move==0):
+            if (move[0]>=0 and move[0]< self.mazes.get_size()) and (move[1]>=0 and move[1]< self.mazes.get_size()):
+                return True
+            else:
+                return False
+            
+        #gpt sometimes reoutputs the target point when solving
+        if (prev_move==move):
+            return True
+        
+
+        prev_move = str(prev_move[0])+','+str(prev_move[1])
+        move = str(move[0])+','+str(move[1])
+
+        if prev_move not in adj_dict:
+            return False
+
+        for poss_move in adj_dict[prev_move]:
+            if poss_move == move:
+                return True
+        
+        return False
 
 
 
@@ -135,6 +184,15 @@ class Visualizer:
         result_list = result_list + [''] + start_pos +  target_pos
 
         return (result_list)
+    
+
+    def display_success(self, n_moves):
+        plt.text(-2.36, 0.2, "SUCCESSFULLY SOLVED MAZE IN "+n_moves+" MOVES", c='green', ha='center')
+        plt.draw()
+        
+    def display_fail(self):
+        plt.text(-2.36, 0.2, "FAILED TO SOLVE MAZE", c='red', ha='center')
+        plt.draw()
     
 
 

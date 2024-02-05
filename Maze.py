@@ -34,6 +34,7 @@ class Maze:
     
     return (" ".join(maze_tok))
   
+  
   def get_adjlist_nopath(self, maze):
     adjlist = self.get_adjlist(maze)
     
@@ -42,6 +43,7 @@ class Maze:
     adjlist = self.update_adjacency_list(adjlist)
     
     return adjlist
+  
   
   def update_adjacency_list(self,input_string):
     # Split the input string into parts
@@ -81,6 +83,32 @@ class Maze:
     output_string = f"{updated_adj_list} {origin_start} {origin_str} {origin_end} {target_start} {target_str} {target_end}"
 
     return output_string
+
+
+  
+  def get_adjacency_dict(self, maze):
+
+    input_string = self.get_adjlist_nopath(maze)
+
+    # Extracting adjacency list from the input string
+    adj_list_match = re.search(r'<ADJLIST_START>(.*?)<ADJLIST_END>', input_string, re.DOTALL)
+    if adj_list_match:
+        adjacency_list = adj_list_match.group(1).strip()
+    else:
+        raise ValueError("No adjacency list found in the input string.")
+
+    # Creating a dictionary to store the possible moves
+    moves_dict = {}
+
+    # Parsing the adjacency list
+    edges = re.findall(r'\((\d+,\d+)\) <--> \((\d+,\d+)\)', adjacency_list)
+    for edge in edges:
+        source, target = edge
+        if source not in moves_dict:
+            moves_dict[source] = []
+        moves_dict[source].append(target)
+
+    return moves_dict
       
 
   def get_size(self):
