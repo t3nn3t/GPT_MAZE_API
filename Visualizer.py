@@ -33,6 +33,8 @@ class Visualizer:
         adjacency_dict = self.mazes.get_adjacency_dict(self.maze_dataset[index])
         prev_move = 0
         still_legal = True
+
+        plt.pause(0.5)
         
         for move in gpt_path:
             legal = self.check_legal(prev_move, move, adjacency_dict)
@@ -41,7 +43,7 @@ class Visualizer:
             self.display_move(move, pos, legal)
             pos += spacing
             prev_move = move
-            plt.pause(0.1)
+            plt.pause(0.5)
 
         if still_legal:
             self.display_success(len(gpt_path)-1)
@@ -115,6 +117,10 @@ class Visualizer:
 
 
         plt.tight_layout()
+
+        plt.text(-3.8, 0.8, "SHORTEST PATH", c='black', ha='center')
+        plt.text(-2.36, 0.8, "GPT PATH", c='black', ha='center')
+
         plt.draw()
 
         
@@ -187,11 +193,11 @@ class Visualizer:
     
 
     def display_success(self, n_moves):
-        plt.text(-2.36, 0.2, "SUCCESSFULLY SOLVED MAZE IN "+n_moves+" MOVES", c='green', ha='center')
+        plt.text(-2.36, 0.17, "SUCCESSFULLY SOLVED MAZE IN "+str(n_moves)+" MOVES", c='green', ha='center')
         plt.draw()
         
     def display_fail(self):
-        plt.text(-2.36, 0.2, "FAILED TO SOLVE MAZE", c='red', ha='center')
+        plt.text(-2.36, 0.17, "FAILED TO SOLVE MAZE", c='red', ha='center')
         plt.draw()
     
 

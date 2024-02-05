@@ -24,7 +24,7 @@ def ask_gpt(question):
 
 
 
-mazes = Maze(4,5)
+mazes = Maze(5,5)
 simulation = Visualizer(mazes)
 INDEX = 0
 
@@ -38,18 +38,18 @@ prompt = pre_prompt + str(gpt_adjlist)
 
 print("Asking ChatGPT: "+prompt)
 
-#response_basic = ask_gpt(prompt)
+response_basic = ask_gpt(prompt)
 
 #response_basic_fake = "Start (1,3), next move (1,4), next move (4,3), next move (4,4), End (2,3)"
 
-#print ("ChatGPT Response: "+str(response_basic))
+print ("ChatGPT Response: "+str(response_basic))
 
-#gpt_path = rh.clean_basic(str(response_basic))
+gpt_path = rh.clean_basic(str(response_basic))
 
 
-gpt_path_fake = [(1,3),(0,3),(0,2),(1,2),(2,2),(2,1), (2,0), (3,0), (4,0), (4,1), (4,2), (4,3), (4,4), (3,4), (2,4), (2,3)]
+#gpt_path_fake = [(1,3),(0,3),(0,2),(1,2),(2,2),(2,1), (2,0), (3,0), (4,0), (4,1), (4,2), (4,3), (4,4), (3,4), (2,4), (2,3)]
 
-simulation.view_paths(gpt_path_fake, INDEX)
+simulation.view_paths(gpt_path, INDEX)
 
 
 
