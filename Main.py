@@ -8,7 +8,7 @@ from Response_handler import Response_handler as rh
 
 client = OpenAI()
 
-f = open("maze_instruction_v2.1", "r")
+f = open("maze_instruction_v2.4", "r")
 instruction = f.read()
 
 
@@ -22,11 +22,12 @@ def ask_gpt(question):
   )
   return completion.choices[0].message.content
 
-
-
-mazes = Maze(5,5)
+#3: 1,3,4,6,7,9
+#4: 2,4,8?,9,
+#5: 
+mazes = Maze(5,10)
 simulation = Visualizer(mazes)
-INDEX = 0
+INDEX = 9
 
 maze_dataset = mazes.get_dataset()
 gpt_adjlist = mazes.get_adjlist_nopath(maze_dataset[INDEX])
