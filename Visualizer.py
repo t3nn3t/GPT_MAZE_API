@@ -22,6 +22,19 @@ class Visualizer:
         self.fig, self.ax = plt.subplots(1, 4, figsize=(12, 5))
 
 
+    def check_paths(self, gpt_path, index):
+        adjacency_dict = self.mazes.get_adjacency_dict(self.maze_dataset[index])
+        prev_move = 0
+        still_legal = True
+        for move in gpt_path:
+            legal = self.check_legal(prev_move, move, adjacency_dict)
+            if not legal:
+                still_legal = False
+            prev_move = move
+        if still_legal:
+            return (len(gpt_path)-1)
+        else:
+            return -1
 
 
     def view_paths(self, gpt_path, index):
