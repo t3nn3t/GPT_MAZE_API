@@ -4,6 +4,7 @@ from matplotlib import patches
 import pandas as pd
 import matplotlib.pyplot as plt
 import re
+import random
 import numpy as np
 from matplotlib import transforms
 from matplotlib.transforms import Affine2D, Transform
@@ -35,6 +36,38 @@ class Visualizer:
             return (len(gpt_path)-1)
         else:
             return -1
+        
+    def check_random(self, index, max):
+        adjacency_dict = self.mazes.get_adjacency_dict(self.maze_dataset[index])
+        start_point = self.mazes.get_start_point(self.maze_dataset[index])
+        target_point = self.mazes.get_target_point(self.maze_dataset[index])
+
+        prev_move = 0
+
+        solved = False
+        MAX = max
+        move_count = 0
+        while not solved:
+            move_count += 1
+            
+            if move_count>=MAX:
+                print("random failed to solve in "+str(MAX)+" moves")
+                break
+            
+            #start at the origin point
+            if prev_move==0:
+                prev_move = start_point
+                continue
+
+            #pick random legal move from adjacency list
+            prev_move = random.choice(adjacency_dict[prev_move])
+
+            if prev_move==target_point:
+                solved = True
+
+        return move_count
+
+            
 
 
     def view_paths(self, gpt_path, index):
@@ -81,9 +114,6 @@ class Visualizer:
 
     def draw_window(self, index):
         print("plotting...")
-
-        
-
 
         maze_size = self.mazes.get_size()
         

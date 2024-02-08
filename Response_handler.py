@@ -6,14 +6,14 @@ class Response_handler:
     def __init__(self):
 
         self.client = OpenAI()
-        f = open("maze_instruction_v2.4", "r")
-        p = open("prompt_v1.0", "r")
+        f = open("system_prompt_v1.0", "r")
+        p = open("user_prompt_v1.0", "r")
         self.instruction = f.read()
         self.prompt = p.read()
 
 
     def ask_gpt(self, post_prompt):
-        print("Asking ChatGPT: "+(self.prompt + post_prompt))
+        #print("Asking ChatGPT: "+(self.prompt + post_prompt))
         completion = self.client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[

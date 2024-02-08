@@ -37,12 +37,18 @@ class Maze:
   
   def get_adjlist_nopath(self, maze):
     adjlist = self.get_adjlist(maze)
-    
+
     adjlist = re.sub(r'<PATH_START>.*?<PATH_END>', '', adjlist)
 
     adjlist = self.update_adjacency_list(adjlist)
     
     return adjlist
+  
+  def get_best_path(self, maze):
+    adjlist = self.get_adjlist(maze)
+
+    path = re.search(r'<PATH_START>.*?<PATH_END>', adjlist)
+
   
   
   def update_adjacency_list(self,input_string):
@@ -109,6 +115,39 @@ class Maze:
         moves_dict[source].append(target)
 
     return moves_dict
+  
+  def get_start_point(self, maze):
+    input_string = self.get_adjlist_nopath(maze)
+    pattern = r'<ORIGIN_START> \((\d+),(\d+)\) <ORIGIN_END>'
+    matches = re.search(pattern, input_string)
+    coord = (0,0)
+    if matches:
+        #get origin point
+        x_coord = matches.group(1)
+        y_coord = matches.group(2)
+        coord = str(x_coord)+','+str(y_coord)
+    else:
+        raise ValueError("No origin found in the input string.")
+    
+    return coord
+  
+
+  def get_target_point(self, maze):
+    input_string = self.get_adjlist_nopath(maze)
+    
+    pattern = r'<TARGET_START> \((\d+),(\d+)\) <TARGET_END>'
+    matches = re.search(pattern, input_string)
+    coord = (0,0)
+    if matches:
+        
+        x_coord = matches.group(1)
+        y_coord = matches.group(2)
+        coord = str(x_coord)+','+str(y_coord)
+    else:
+        raise ValueError("No adjacency list found in the input string.")
+    
+    return coord
+     
       
 
   def get_size(self):
