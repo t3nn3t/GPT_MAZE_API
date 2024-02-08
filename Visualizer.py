@@ -79,7 +79,7 @@ class Visualizer:
 
     def view_paths(self, gpt_path, index):
         self.draw_window(index)
-        target_point = self.mazes.get_target_point(self.maze_dataset[index])
+        _,target_point = self.mazes.get_target_point(self.maze_dataset[index])
         pos = 0.15
         spacing = 0.7/len(gpt_path)
         
