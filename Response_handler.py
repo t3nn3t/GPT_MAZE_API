@@ -13,7 +13,7 @@ class Response_handler:
 
 
     def ask_gpt(self, post_prompt):
-        #print("Asking ChatGPT: "+(self.prompt + post_prompt))
+        print("Asking ChatGPT: "+(self.prompt + post_prompt))
         completion = self.client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
@@ -44,3 +44,14 @@ class Response_handler:
             # Convert the matches to tuples and store in a list
             coordinates = [(int(x),int(y)) for x, y in matches]
         return coordinates
+    
+
+    #Example: move list: (1,3) -> (1,4), (4,3)->(4,4) end of move list
+    #         Start (1,3), next move (1,4), next move (4,3), next move (4,4), End (2,3)
+    def clean_adv(self, response):
+        # Define a regular expression pattern to match coordinates
+        pattern = r'Start(.*)'
+        move_chain = re.search(pattern, response)
+        move_chain = move_chain.group()
+
+        return self.clean_basic(move_chain)

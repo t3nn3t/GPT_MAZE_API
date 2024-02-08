@@ -48,6 +48,14 @@ class Maze:
     adjlist = self.get_adjlist(maze)
 
     path = re.search(r'<PATH_START>.*?<PATH_END>', adjlist)
+    path_string = path.group()
+
+    pattern = r'\((\d+),(\d+)\)'
+    
+    # Find all matches of the pattern in the string
+    matches = re.findall(pattern, path_string)
+
+    return len(matches)
 
   
   
@@ -138,15 +146,18 @@ class Maze:
     pattern = r'<TARGET_START> \((\d+),(\d+)\) <TARGET_END>'
     matches = re.search(pattern, input_string)
     coord = (0,0)
+    coord_int = (-1,-1)
     if matches:
         
         x_coord = matches.group(1)
         y_coord = matches.group(2)
         coord = str(x_coord)+','+str(y_coord)
+        coord_int = (int(x_coord),int(y_coord))
+
     else:
         raise ValueError("No adjacency list found in the input string.")
     
-    return coord
+    return coord, coord_int
      
       
 

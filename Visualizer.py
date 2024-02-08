@@ -25,22 +25,29 @@ class Visualizer:
 
     def check_paths(self, gpt_path, index):
         adjacency_dict = self.mazes.get_adjacency_dict(self.maze_dataset[index])
+        _,target_point = self.mazes.get_target_point(self.maze_dataset[index])
         prev_move = 0
+        move_count = 0
         still_legal = True
         for move in gpt_path:
+            move_count += 1
             legal = self.check_legal(prev_move, move, adjacency_dict)
             if not legal:
                 still_legal = False
             prev_move = move
-        if still_legal:
-            return (len(gpt_path)-1)
+            if move==target_point:
+                break
+            
+        if still_legal and prev_move==target_point:
+            return (move_count)
         else:
             return -1
+        
         
     def check_random(self, index, max):
         adjacency_dict = self.mazes.get_adjacency_dict(self.maze_dataset[index])
         start_point = self.mazes.get_start_point(self.maze_dataset[index])
-        target_point = self.mazes.get_target_point(self.maze_dataset[index])
+        target_point,_ = self.mazes.get_target_point(self.maze_dataset[index])
 
         prev_move = 0
 
@@ -72,29 +79,34 @@ class Visualizer:
 
     def view_paths(self, gpt_path, index):
         self.draw_window(index)
-
+        target_point = self.mazes.get_target_point(self.maze_dataset[index])
         pos = 0.15
         spacing = 0.7/len(gpt_path)
         
         adjacency_dict = self.mazes.get_adjacency_dict(self.maze_dataset[index])
         prev_move = 0
+        move_count = 0
         still_legal = True
 
         plt.pause(0.5)
         
         for move in gpt_path:
+            move_count += 1
             legal = self.check_legal(prev_move, move, adjacency_dict)
             if not legal:
                 still_legal = False
+
             self.display_move(move, pos, legal)
             pos += spacing
+            if move==target_point:
+                break
             prev_move = move
             plt.pause(0.5)
 
         if still_legal:
-            self.display_success(len(gpt_path)-1)
+            self.display_success(move_count)
             print("-----MAZE SOLVED SUCCESSFULLY-----")
-            print("\nMOVES USE: "+ str(len(gpt_path)-1))
+            print("\nMOVES USE: "+ str(move_count))
             
         else:
             self.display_fail()

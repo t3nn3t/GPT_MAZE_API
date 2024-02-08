@@ -30,7 +30,7 @@ def run_single(index, size):
 
   print ("ChatGPT Response: "+str(response_basic))
 
-  gpt_path = broker.clean_basic(str(response_basic))
+  gpt_path = broker.clean_adv(str(response_basic))
 
   simulation.view_paths(gpt_path, INDEX)
 
@@ -46,12 +46,20 @@ def run_test(n_mazes, size, repeats):
 
 
 
-#run_single(0,4)
+#run_single(index=4,size=3)
   
-test_score, gpt_total_moves, random_total_moves = run_test(n_mazes=15, size=3, repeats=3)
+
+test_score, gpt_total_moves, random_total_moves, opt_moves = run_test(n_mazes=5, size=3, repeats=1)
 print(str(round(test_score,2))+"%")
 print("gpt moves: "+ str(gpt_total_moves))
 print("random moves: "+ str(random_total_moves))
+print("optimal moves: "+ str(opt_moves))
+
+print("\n\n")
+
+print("extra gpt moves: "+ str(gpt_total_moves - opt_moves))
+print("extra random moves: "+ str(random_total_moves - opt_moves))
+
 
 
 #response_basic_fake = "Start (1,3), next move (1,4), next move (4,3), next move (4,4), End (2,3)"
