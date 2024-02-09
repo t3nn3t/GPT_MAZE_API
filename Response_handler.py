@@ -55,7 +55,7 @@ class Response_handler:
         move_chain = re.search(pattern, response)
 
         if move_chain is None:
-            self.clean_basic("(-1,-1)")
+            return self.clean_basic("(-1,-1)")
         move_chain = move_chain.group()
 
         return self.clean_basic(move_chain)

@@ -47,7 +47,7 @@ def run_test(n_mazes, size, repeats):
 #run_single(index=3,size=3)
   
 
-test_score, gpt_total_moves, random_total_moves, opt_moves = run_test(n_mazes=15, size=3, repeats=3)
+test_score, gpt_total_moves, random_total_moves, opt_moves = run_test(n_mazes=15, size=4, repeats=3)
 print(str(round(test_score,2))+"%")
 print("gpt moves: "+ str(gpt_total_moves))
 print("random moves: "+ str(random_total_moves))
