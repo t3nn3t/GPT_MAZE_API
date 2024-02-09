@@ -202,7 +202,7 @@ class Visualizer:
 
     def check_legal(self, prev_move, move, adj_dict):
         
-
+    
         if (prev_move==0):
             if (move[0]>=0 and move[0]< self.mazes.get_size()) and (move[1]>=0 and move[1]< self.mazes.get_size()):
                 return True
