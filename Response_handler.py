@@ -6,7 +6,7 @@ class Response_handler:
     def __init__(self):
 
         self.client = OpenAI()
-        f = open("system_prompt_v1.0", "r")
+        f = open("system_prompt_v1.1", "r")
         p = open("user_prompt_v1.0", "r")
         self.instruction = f.read()
         self.prompt = p.read()
@@ -15,7 +15,7 @@ class Response_handler:
     def ask_gpt(self, post_prompt):
         print("Asking ChatGPT: "+(self.prompt + post_prompt))
         completion = self.client.chat.completions.create(
-        model="gpt-3.5-turbo-0125",
+        model="gpt-3.5-turbo",
         messages=[
         {"role": "system", "content": self.instruction},
         {"role": "user", "content": (self.prompt + post_prompt)}
@@ -55,8 +55,7 @@ class Response_handler:
         move_chain = re.search(pattern, response)
 
         if move_chain is None:
-            
-            return ("(-1,-1)")
+            self.clean_basic("(-1,-1)")
         move_chain = move_chain.group()
 
         return self.clean_basic(move_chain)
