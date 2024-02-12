@@ -6,7 +6,7 @@ class Response_handler:
     def __init__(self):
 
         self.client = OpenAI()
-        f = open("system_prompt_v1.1", "r")
+        f = open("system_prompt_v1.0", "r")
         p = open("user_prompt_v1.0", "r")
         self.instruction = f.read()
         self.prompt = p.read()
@@ -19,7 +19,8 @@ class Response_handler:
         messages=[
         {"role": "system", "content": self.instruction},
         {"role": "user", "content": (self.prompt + post_prompt)}
-        ]
+        ],
+        max_tokens=1000
         )
         return completion.choices[0].message.content
 
@@ -55,7 +56,24 @@ class Response_handler:
         move_chain = re.search(pattern, response)
 
         if move_chain is None:
+            print("NO MOVES FROM GPT")
             return self.clean_basic("(-1,-1)")
         move_chain = move_chain.group()
+
+        return self.clean_basic(move_chain)
+    
+
+    #Example: Start (1,3), connection "(1,3) <--> (1,4)" next move (1,4), connection "(1,4) <--> (2,3)" End (2,3)
+    def clean_cot(self, response):
+        
+        # Define a regular expression pattern to match coordinates
+        pattern = r'(?<!")\((\d+,\d+)\)(?!")'
+        move_chain = re.findall(pattern, response)
+        move_chain = "("+('), ('.join(move_chain))+")"
+        
+        if move_chain is None:
+            return self.clean_basic("(-1,-1)")
+        
+        move_chain = "Start "+move_chain
 
         return self.clean_basic(move_chain)

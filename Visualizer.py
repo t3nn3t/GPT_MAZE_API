@@ -26,15 +26,24 @@ class Visualizer:
     def check_paths(self, gpt_path, index):
         adjacency_dict = self.mazes.get_adjacency_dict(self.maze_dataset[index])
         _,target_point = self.mazes.get_target_point(self.maze_dataset[index])
+        _,origin_point = self.mazes.get_start_point(self.maze_dataset[index])
         prev_move = 0
         move_count = 0
         still_legal = True
         for move in gpt_path:
             move_count += 1
+            #check first move is at start
+            if move_count==1:
+                if origin_point != move:
+                    still_legal = False
+                    break
+
             legal = self.check_legal(prev_move, move, adjacency_dict)
+
             if not legal:
                 still_legal = False
             prev_move = move
+
             if move==target_point:
                 break
             
@@ -46,7 +55,7 @@ class Visualizer:
         
     def check_random(self, index, max):
         adjacency_dict = self.mazes.get_adjacency_dict(self.maze_dataset[index])
-        start_point = self.mazes.get_start_point(self.maze_dataset[index])
+        start_point,_ = self.mazes.get_start_point(self.maze_dataset[index])
         target_point,_ = self.mazes.get_target_point(self.maze_dataset[index])
 
         prev_move = 0

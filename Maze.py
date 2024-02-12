@@ -85,8 +85,8 @@ class Maze:
 
         # Check if edge_tuple has enough elements
         if len(edge_tuple) >= 4:
-            forward_edge = f"({edge_tuple[0]},{edge_tuple[1]}) <--> ({edge_tuple[2]},{edge_tuple[3]})"
-            backward_edge = f"({edge_tuple[2]},{edge_tuple[3]}) <--> ({edge_tuple[0]},{edge_tuple[1]})"
+            forward_edge = f"({edge_tuple[0]},{edge_tuple[1]}) -> ({edge_tuple[2]},{edge_tuple[3]})"
+            backward_edge = f"({edge_tuple[2]},{edge_tuple[3]}) -> ({edge_tuple[0]},{edge_tuple[1]})"
             unique_edges.add(forward_edge)
             unique_edges.add(backward_edge)
 
@@ -115,7 +115,7 @@ class Maze:
     moves_dict = {}
 
     # Parsing the adjacency list
-    edges = re.findall(r'\((\d+,\d+)\) <--> \((\d+,\d+)\)', adjacency_list)
+    edges = re.findall(r'\((\d+,\d+)\) -> \((\d+,\d+)\)', adjacency_list)
     for edge in edges:
         source, target = edge
         if source not in moves_dict:
@@ -129,15 +129,17 @@ class Maze:
     pattern = r'<ORIGIN_START> \((\d+),(\d+)\) <ORIGIN_END>'
     matches = re.search(pattern, input_string)
     coord = (0,0)
+    coord_int = (-1,-1)
     if matches:
         #get origin point
         x_coord = matches.group(1)
         y_coord = matches.group(2)
         coord = str(x_coord)+','+str(y_coord)
+        coord_int = (int(x_coord),int(y_coord))
     else:
         raise ValueError("No origin found in the input string.")
     
-    return coord
+    return coord, coord_int
   
 
   def get_target_point(self, maze):

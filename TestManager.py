@@ -22,6 +22,8 @@ class TestManager:
 
 
                 gpt_path = broker.clean_adv(str(gpt_response_basic))
+                #gpt_path = broker.clean_cot(str(gpt_response_basic))
+
 
                 random_result = simul.check_random(index, 50)
                 result = simul.check_paths(gpt_path, index)
@@ -31,12 +33,12 @@ class TestManager:
                     gpt_moves += result
                     random_moves += random_result
                     optimal_moves += optimal_path
-                
+                print("solved: "+ str(solved))
                 
 
         
         
-        print("total" +str(total))
+        print("total: " +str(total))
         print("sovled: "+ str(solved))
 
         score = (solved/total) * 100
