@@ -23,6 +23,7 @@ class TestManager:
 
                 gpt_path = broker.clean_adv(str(gpt_response_basic))
                 #gpt_path = broker.clean_cot(str(gpt_response_basic))
+                #gpt_path = broker.clean_quoted(str(gpt_response_basic))
 
 
                 random_result = simul.check_random(index, 50)
