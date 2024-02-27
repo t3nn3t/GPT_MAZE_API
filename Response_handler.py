@@ -21,7 +21,7 @@ class Response_handler:
         {"role": "user", "content": (self.prompt + post_prompt)}
         ],
         max_tokens=2000,
-        temperature=0.1
+        temperature=0.5
         )
         return completion.choices[0].message.content
 

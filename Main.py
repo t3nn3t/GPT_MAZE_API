@@ -45,7 +45,7 @@ def run_test(n_mazes, size, repeats):
   return tm.test(test_mazes, repeats, simulation, broker)
 
 
-run_single(index=117,size=3)
+run_single(index=120,size=5)
   
 """
 test_score, gpt_total_moves, random_total_moves, opt_moves = run_test(n_mazes=15, size=5, repeats=3)
