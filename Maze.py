@@ -38,8 +38,8 @@ class Maze:
   def get_adjlist_nopath(self, maze):
     adjlist = self.get_adjlist(maze)
 
-    path = re.search(r'<PATH_START>.*?<PATH_END>', adjlist)
-    print("PATH: " +str(path.group(0)))
+    #path = re.search(r'<PATH_START>.*?<PATH_END>', adjlist)
+    #print("PATH: " +str(path.group(0)))
     adjlist = re.sub(r'<PATH_START>.*?<PATH_END>', '', adjlist)
 
     adjlist = self.update_adjacency_list(adjlist)

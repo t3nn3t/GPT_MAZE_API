@@ -15,20 +15,25 @@ from TestManager import TestManager as tm
 #3: 1,3,4,6,7,9
 #4: 2,4,8?,9,
 #5: 5,9
-def run_single(index, size):
-  broker = rh()
+def run_single(index, size, supplier, model, prompt):
+  broker = rh(model = model, prompt = prompt)
   mazes = Maze(size,121)
   simulation = Visualizer(mazes)
   INDEX = index
 
   maze_dataset = mazes.get_dataset()
-  gpt_adjlist = mazes.get_adjlist_nopath(maze_dataset[INDEX])
+  llm_adjlist = mazes.get_adjlist_nopath(maze_dataset[INDEX])
 
-  prompt_path = str(gpt_adjlist)
+  prompt_path = str(llm_adjlist)
 
-  response_basic = broker.ask_gpt(prompt_path)
+  if str.lower(supplier)=="openai":
+    response_basic = broker.ask_gpt(prompt_path)
+  elif str.lower(supplier)=="google":
+    response_basic = broker.ask_gemini(prompt_path)
+  else:
+    raise Exception("Error: Supplier not recognised")
 
-  print ("ChatGPT Response: "+str(response_basic))
+  print ("\n"+str(model)+" Response: "+str(response_basic)+"\n")
 
   #gpt_path = broker.clean_cot(str(response_basic))
   gpt_path = broker.clean_adv(str(response_basic))
@@ -53,10 +58,12 @@ def run_test(n_mazes, size, repeats):
   return tm.test(test_mazes, repeats, simulation, broker)
 
 
-run_single(index=120,size=4)
+#model = gpt-3.5-turbo-0125, gpt-4 | gemini-1.0-pro
+run_single(index=119,size=4, supplier = "google", model = "gemini-1.0-pro", prompt = "system_prompt_v1.0")
 
 #test_llm("what can you do?")
   
+#model, prompt
 """
 test_score, gpt_total_moves, random_total_moves, opt_moves = run_test(n_mazes=15, size=5, repeats=3)
 print(str(round(test_score,2))+"%")
