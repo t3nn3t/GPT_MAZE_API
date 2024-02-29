@@ -1,4 +1,5 @@
 import re
+import time
 from openai import OpenAI
 import os
 import requests
@@ -50,6 +51,9 @@ class Response_handler:
         # Load the model
         #model = genai.GenerativeModel('gemini-pro')
         response = model.generate_content(full_prompt)
+        print("sleeping...")
+        time.sleep(10)
+        print("...awake")
         return response.text
 
 
