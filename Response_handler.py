@@ -1,5 +1,15 @@
 import re
 from openai import OpenAI
+import os
+import requests
+from dotenv import load_dotenv
+import google.generativeai as genai
+from google.cloud import aiplatform
+import vertexai
+from vertexai.generative_models import GenerativeModel, Part
+from google.auth import default
+from google.auth.transport.requests import Request
+from google.auth.credentials import Credentials
 
 class Response_handler:
 
@@ -8,8 +18,10 @@ class Response_handler:
         self.client = OpenAI()
         f = open("system_prompt_v1.0", "r")
         p = open("user_prompt_v1.0", "r")
+        d = open("default_sys_prompt.txt", "r")
         self.instruction = f.read()
         self.prompt = p.read()
+        self.default_sys = d.read()
 
 
     def ask_gpt(self, post_prompt):
@@ -24,6 +36,17 @@ class Response_handler:
         temperature=0.5
         )
         return completion.choices[0].message.content
+    
+
+    def ask_gemini(self, prompt: str) -> str:
+        # Initialize Vertex AI
+        
+        vertexai.init(project="clear-ranger-415717", location="europe-west2")
+        model = GenerativeModel("gemini-1.0-pro")
+        # Load the model
+        #model = genai.GenerativeModel('gemini-pro')
+        response = model.generate_content("What is the meaning of life?")
+        return response.text
 
 
 

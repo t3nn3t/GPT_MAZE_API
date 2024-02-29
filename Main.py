@@ -35,6 +35,14 @@ def run_single(index, size):
 
   simulation.view_paths(gpt_path, INDEX)
 
+def test_llm(prompt):
+  broker = rh()
+
+  response_basic = broker.ask_gemini(prompt)
+
+  print ("LLM Response: "+str(response_basic))
+
+
 
 def run_test(n_mazes, size, repeats):
   broker = rh()
@@ -46,6 +54,8 @@ def run_test(n_mazes, size, repeats):
 
 
 run_single(index=120,size=4)
+
+#test_llm("what can you do?")
   
 """
 test_score, gpt_total_moves, random_total_moves, opt_moves = run_test(n_mazes=15, size=5, repeats=3)
