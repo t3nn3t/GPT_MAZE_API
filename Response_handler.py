@@ -38,7 +38,7 @@ class Response_handler:
         {"role": "user", "content": (full_prompt)}
         ],
         max_tokens=2000,
-        temperature=0.5
+        temperature=1
         )
         return completion.choices[0].message.content
     
@@ -51,9 +51,9 @@ class Response_handler:
         # Load the model
         #model = genai.GenerativeModel('gemini-pro')
         response = model.generate_content(full_prompt)
-        print("sleeping...")
-        time.sleep(10)
-        print("...awake")
+
+        #sleep to not reach api response limit
+        time.sleep(4)
         return response.text
 
 
@@ -90,7 +90,7 @@ class Response_handler:
         move_chain = re.search(pattern, response)
 
         if move_chain is None:
-            print("NO MOVES FROM GPT")
+            print("NO MOVES FROM LLM")
             return self.clean_basic("(-1,-1)")
         move_chain = move_chain.group()
 

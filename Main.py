@@ -55,7 +55,7 @@ def run_test(n_mazes, size, repeats, supplier, model, prompt):
 
   simulation = Visualizer(test_mazes)
 
-  return tm.test(test_mazes, repeats, simulation, broker, supplier=supplier)
+  return tm.test(test_mazes, repeats, simulation, broker, supplier=supplier, prompt_type=prompt)
 
 
 #supplier = "openai", "google"
@@ -65,8 +65,7 @@ def run_test(n_mazes, size, repeats, supplier, model, prompt):
 
 #test_llm("what can you do?")
   
-
-test_score, gpt_total_moves, random_total_moves, opt_moves = run_test(n_mazes=15, size=5, repeats=1, supplier = "google", model = "gemini-1.0-pro", prompt = "system_prompt_v1.0")
+test_score, gpt_total_moves, random_total_moves, opt_moves = run_test(n_mazes=15, size=4, repeats=1, supplier = "openai", model = "gpt-3.5-turbo-0125", prompt = "system_prompt_basic.txt")
 print(str(round(test_score,2))+"%")
 print("LLM moves: "+ str(gpt_total_moves))
 print("random moves: "+ str(random_total_moves))
