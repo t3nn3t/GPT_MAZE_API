@@ -1,0 +1,44 @@
+INPUT: 
+Below is an adjacency list of a maze, as well as the origin point and target point, output the moves to get from the origin point to the target point as efficiently as possible in full:<ADJLIST_START> (4,2) -> (4,1) ; (1,2) -> (1,1) ; (2,4) -> (3,4) ; (3,4) -> (2,4) ; (1,2) -> (2,2) ; (0,4) -> (1,4) ; (1,1) -> (0,1) ; (0,1) -> (1,1) ; (2,2) -> (2,1) ; (1,3) -> (0,3) ; (4,2) -> (4,3) ; (2,2) -> (3,2) ; (1,0) -> (0,0) ; (2,0) -> (3,0) ; (0,2) -> (0,3) ; (0,1) -> (0,0) ; (0,3) -> (1,3) ; (1,4) -> (2,4) ; (2,2) -> (1,2) ; (3,0) -> (4,0) ; (1,3) -> (2,3) ; (4,3) -> (4,2) ; (3,3) -> (3,4) ; (1,4) -> (0,4) ; (0,3) -> (0,2) ; (2,3) -> (1,3) ; (3,2) -> (2,2) ; (4,4) -> (3,4) ; (4,4) -> (4,3) ; (0,0) -> (0,1) ; (4,1) -> (3,1) ; (3,1) -> (4,1) ; (4,3) -> (4,4) ; (2,1) -> (3,1) ; (3,3) -> (2,3) ; (3,4) -> (4,4) ; (4,0) -> (3,0) ; (2,3) -> (3,3) ; (4,1) -> (4,2) ; (3,1) -> (2,1) ; (2,0) -> (1,0) ; (0,0) -> (1,0) ; (1,0) -> (2,0) ; (3,0) -> (2,0) ; (1,1) -> (1,2) ; (3,4) -> (3,3) ; (2,1) -> (2,2) ; (2,4) -> (1,4) <ADJLIST_END> <ORIGIN_START> (1,4) <ORIGIN_END> <TARGET_START> (0,2) <TARGET_END>
+
+CORRECT RESPONSE:
+start "(1,4)"
+
+current position is (1,4)
+target is (0,2)
+legal moves are (1,4) -> (2,4), (1,4) -> (0,4)
+best next move is "(2,4)"
+
+current position is (2,4)
+target is (0,2)
+legal moves are (2,4) -> (3,4), (2,4) -> (1,4)
+best next move is "(3,4)"
+
+current position is (3,4)
+target is (0,2)
+legal moves are (3,4) -> (2,4), (3,4) -> (4,4), (3,4) -> (3,3)
+best next move is "(3,3)"
+
+current position is (3,3)
+target is (0,2)
+legal moves are (3,3) -> (3,4), (3,3) -> (2,3)
+best next move is "(2,3)"
+
+current position is (2,3)
+target is (0,2)
+legal moves are (2,3) -> (1,3), (2,3) -> (3,3)
+best next move is "(1,3)"
+
+current position is (1,3)
+target is (0,2)
+legal moves are (1,3) -> (0,3), (1,3) -> (2,3)
+best next move is "(0,3)"
+
+current position is (0,3)
+target is (0,2)
+legal moves are (0,3) -> (1,3), (0,3) -> (0,2)
+best next move is "(0,2)"
+
+current position is (0,2)
+target is (0,2)
+End

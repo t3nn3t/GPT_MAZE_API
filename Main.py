@@ -63,7 +63,7 @@ def run_test(n_mazes, size, repeats, supplier, model, prompt):
 
 #run_single(index=119,size=4, supplier = "google", model = "gemini-1.0-pro", prompt = "system_prompt_v1.0")
 
-#test_llm("what can you do?")
+#test_llm("what is the meaning of life?")
   
 test_score, gpt_total_moves, random_total_moves, opt_moves = run_test(n_mazes=15, size=4, repeats=1, supplier = "openai", model = "gpt-3.5-turbo-0125", prompt = "system_prompt_basic.txt")
 print(str(round(test_score,2))+"%")

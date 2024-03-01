@@ -1,0 +1,19 @@
+INPUT: 
+Below is an adjacency list of a maze, as well as the origin point and target point, output the moves to get from the origin point to the target point as efficiently as possible in full:<ADJLIST_START> (2,2) -> (2,1) ; (0,1) -> (0,0) ; (2,0) -> (2,1) ; (2,0) -> (1,0) ; (1,2) -> (1,1) ; (2,2) -> (1,2) ; (1,1) -> (1,2) ; (0,0) -> (0,1) ; (0,2) -> (0,1) ; (2,1) -> (2,2) ; (0,0) -> (1,0) ; (0,1) -> (0,2) ; (1,0) -> (2,0) ; (1,0) -> (0,0) ; (1,2) -> (2,2) ; (2,1) -> (2,0) <ADJLIST_END> <ORIGIN_START> (0,0) <ORIGIN_END> <TARGET_START> (2,0) <TARGET_END>
+
+CORRECT RESPONSE:
+start "(0,0)"
+
+current position is (0,0)
+target is (2,0)
+legal moves are (0,0) -> (0,1), (0,0) -> (1,0)
+best next move is "(1,0)"
+
+current position is (1,0)
+target is (2,0)
+legal moves are (1,0) -> (0,0), (1,0) -> (2,0)
+best next move is "(2,0)"
+
+current position is (2,0)
+target is (2,0)
+End

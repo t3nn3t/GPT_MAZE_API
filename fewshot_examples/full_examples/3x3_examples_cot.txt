@@ -31,7 +31,3 @@ Below is an adjacency list of a maze, as well as the origin point and target poi
 
 CORRECT RESPONSE:
 Start (1,2), connection "(1,2) -> (2,2)" next move (2,2), connection "(2,2) -> (2,1)" next move (2,1), connection "(2,1) -> (2,0)" next move (2,0), End (2,0)
-
-----------
-
-Start (<column>,<row>), connection "(<column>,<row>) -> (<column>,<row>)"
