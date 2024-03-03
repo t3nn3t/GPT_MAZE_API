@@ -28,9 +28,10 @@ class Response_handler:
         self.default_sys = d.read()
 
 
-    def ask_gpt(self, post_prompt):
-        full_prompt = (self.instruction + "\n\n" +self.prompt + post_prompt)
-        print("\nAsking ChatGPT:\n"+full_prompt+"\n")
+    def ask_gpt(self, post_prompt, examples="", debug=False):
+        full_prompt = (self.instruction + "\n" + examples + "\n\n" + self.prompt + post_prompt)
+        if debug:
+            print("\nAsking ChatGPT:\n"+full_prompt+"\n")
         completion = self.client.chat.completions.create(
         model=self.model,
         messages=[
@@ -43,14 +44,14 @@ class Response_handler:
         return completion.choices[0].message.content
     
 
-    def ask_gemini(self, post_prompt: str) -> str:
-        full_prompt = (self.instruction + "\n\n" +self.prompt + post_prompt)
-        print("\nAsking Gemini:\n"+(full_prompt)+"\n")
+    def ask_gemini(self, post_prompt: str, examples="", debug=False) -> str:
+        full_prompt = (self.instruction + "\n" + examples + "\n\n" +self.prompt + post_prompt)
+        if debug:
+            print("\nAsking Gemini:\n"+(full_prompt)+"\n")
         vertexai.init(project="clear-ranger-415717", location="europe-west2")
         model = GenerativeModel("gemini-1.0-pro")
         # Load the model
-        #model = genai.GenerativeModel('gemini-pro')
-        response = model.generate_content(full_prompt)
+        response = model.generate_content(full_prompt, generation_config={"temperature": 0.0})
 
         #sleep to not reach api response limit
         time.sleep(4)
@@ -76,9 +77,6 @@ class Response_handler:
 
             # Convert the matches to tuples and store in a list
             coordinates = [(int(x),int(y)) for x, y in matches]
-        print('\ncleaned:')
-        print(coordinates)
-        print("")
         return coordinates
     
 

@@ -20,7 +20,7 @@ class Maze:
   
 
   def get_dataset(self):
-     return self.DATASET
+    return self.DATASET
   
   def get_size(self):
     return self.size

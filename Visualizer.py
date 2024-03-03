@@ -67,7 +67,7 @@ class Visualizer:
             move_count += 1
             
             if move_count>=MAX:
-                print("random failed to solve in "+str(MAX)+" moves")
+                print("Random agent failed to solve in "+str(MAX)+" moves")
                 break
             
             #start at the origin point
