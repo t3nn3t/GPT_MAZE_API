@@ -2,7 +2,7 @@ import re
 
 class TestManager:
 
-    def test(mazes, repeats, simul, broker, supplier, prompt_file, shots, debug):
+    def test(mazes, repeats, simul, broker, supplier, prompt_file, shots, reflexion, debug):
 
         maze_dataset = mazes.get_dataset()
         maze_size = mazes.get_size()
@@ -42,16 +42,11 @@ class TestManager:
                     examples += ("\n"+example+"\n\n")
 
                 if str.lower(supplier)=="openai":
-                    llm_response_basic = broker.ask_gpt(prompt_path, examples, debug)
+                    llm_response_basic = broker.ask_gpt(prompt_path, examples, reflexion, debug)
                 elif str.lower(supplier)=="google":
                     llm_response_basic = broker.ask_gemini(prompt_path, examples, debug)
                 else:
                     raise Exception("Error: Supplier not recognised")
-                
-                if (debug):
-                    print("\nLLM Reponse:")
-                    print(llm_response_basic)
-                    print("")
                 
 
                 if prompt_file in basic_prompts:
@@ -62,6 +57,9 @@ class TestManager:
                     llm_path = broker.clean_quoted(str(llm_response_basic))
                 else:
                     raise Exception("Error: Failed to clean response, prompt path not found in prompt types")
+                
+                print("CLEANED PATH")
+                print(llm_path)
 
 
                 random_result = simul.check_random(index, 50)

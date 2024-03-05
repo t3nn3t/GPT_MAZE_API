@@ -11,6 +11,7 @@ from vertexai.generative_models import GenerativeModel, Part
 from google.auth import default
 from google.auth.transport.requests import Request
 from google.auth.credentials import Credentials
+from google.generativeai import GenerationConfig
 
 class Response_handler:
 
@@ -22,16 +23,20 @@ class Response_handler:
         f = open(prompt, "r")
         p = open("user_prompt_v1.0", "r")
         d = open("default_sys_prompt.txt", "r")
+        r = open("system_prompt_reflexion.txt", "r")
 
         self.instruction = f.read()
         self.prompt = p.read()
         self.default_sys = d.read()
+        self.reflexion_prompt = r.read()
 
 
-    def ask_gpt(self, post_prompt, examples="", debug=False):
+    def ask_gpt(self, post_prompt, examples="", reflexion=False, debug=False):
         full_prompt = (self.instruction + "\n" + examples + "\n\n" + self.prompt + post_prompt)
         if debug:
             print("\nAsking ChatGPT:\n"+full_prompt+"\n")
+        
+        #message 1
         completion = self.client.chat.completions.create(
         model=self.model,
         messages=[
@@ -39,8 +44,38 @@ class Response_handler:
         {"role": "user", "content": (full_prompt)}
         ],
         max_tokens=2000,
-        temperature=1
-        )
+        temperature=1)
+
+        if (debug):
+                    print("\nLLM Reponse:")
+                    print(completion.choices[0].message.content)
+                    print("")
+
+        if (reflexion):
+            #message 2 (Reflexion)
+
+            if debug:
+                print("\nAsking ChatGPT Reflexion:\n"+self.reflexion_prompt+"\n")
+
+            completion_reflexion = self.client.chat.completions.create(
+            model=self.model,
+            messages=[
+            {"role": "system", "content": self.default_sys},
+            {"role": "user", "content": (full_prompt)},
+            {"role": "assistant", "content": completion.choices[0].message.content},
+            {"role": "user", "content": self.reflexion_prompt}
+            ],
+            max_tokens=2000,
+            temperature=1)
+
+            if (debug):
+                    print("\nLLM Reflexion Reponse:")
+                    print(completion_reflexion.choices[0].message.content)
+                    print("")
+
+            return completion_reflexion.choices[0].message.content
+        
+
         return completion.choices[0].message.content
     
 
@@ -48,13 +83,17 @@ class Response_handler:
         full_prompt = (self.instruction + "\n" + examples + "\n\n" +self.prompt + post_prompt)
         if debug:
             print("\nAsking Gemini:\n"+(full_prompt)+"\n")
+
         vertexai.init(project="clear-ranger-415717", location="europe-west2")
         model = GenerativeModel("gemini-1.0-pro")
-        # Load the model
-        response = model.generate_content(full_prompt, generation_config={"temperature": 0.0})
+
+        
+        response = model.generate_content(full_prompt, generation_config={"temperature":0.0})
 
         #sleep to not reach api response limit
         time.sleep(4)
+        responses = [candidate.content.parts[0].text for candidate in response.candidates]
+        print(responses)
         return response.text
 
 

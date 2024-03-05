@@ -1,0 +1,14 @@
+Does your solution solve the maze without any illegal moves that aren't in the adjacency list? 
+
+if so explain that it was and then reiterate the path in the same format as previously given.
+
+if not then explain why and then write the correct path in the same format as previously given.
+
+
+Follow the format below in your response:
+
+<explanation of if solution was correct or not>
+
+Correct solution:
+
+<correct solution to the maze in the same format as the previous response>

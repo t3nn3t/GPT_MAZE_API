@@ -6,5 +6,3 @@ Check if you are at the target point and in which case end your path.
 You are to output your answers in the following format:
 
 Start (<column>,<row>), next move (<column>,<row>), next move (<column>,<row>), next move (<column>,<row>)..., End (<column>,<row>)
-
-
