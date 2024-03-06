@@ -61,8 +61,8 @@ def test_llm(prompt):
   print ("LLM Response: "+str(response_basic))
 
 
-def run_test(n_mazes, size, repeats, supplier, model, prompt, shots, reflexion, debug):
-  broker = rh(model = model, prompt = prompt)
+def run_test(n_mazes, size, repeats, supplier, model, prompt, shots, temperature, reflexion, debug):
+  broker = rh(model = model, prompt = prompt, temperature=temperature)
   test_mazes = Maze(size,n_mazes)
 
   simulation = Visualizer(test_mazes)
@@ -78,7 +78,7 @@ def run_test(n_mazes, size, repeats, supplier, model, prompt, shots, reflexion, 
 
   
 
-test_score, gpt_total_moves, random_total_moves, opt_moves = run_test(n_mazes=5, size=3, repeats=1, supplier = "openai", model = "gpt-3.5-turbo-0125", prompt = "system_prompt_cot.txt", shots=0, reflexion=True, debug=True)
+test_score, gpt_total_moves, random_total_moves, opt_moves = run_test(n_mazes=1, size=3, repeats=1, supplier = "google", model = "gemini-1.0-pro", prompt = "system_prompt_cot.txt", shots=0, temperature=1.0,reflexion=True, debug=True)
 
 print(str(round(test_score,2))+"%")
 print("LLM moves: "+ str(gpt_total_moves))

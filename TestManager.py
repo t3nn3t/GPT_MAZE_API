@@ -44,10 +44,12 @@ class TestManager:
                 if str.lower(supplier)=="openai":
                     llm_response_basic = broker.ask_gpt(prompt_path, examples, reflexion, debug)
                 elif str.lower(supplier)=="google":
-                    llm_response_basic = broker.ask_gemini(prompt_path, examples, debug)
+                    llm_response_basic = broker.ask_gemini(prompt_path, examples, reflexion, debug)
                 else:
                     raise Exception("Error: Supplier not recognised")
                 
+                print("important")
+                print(llm_response_basic)
 
                 if prompt_file in basic_prompts:
                     llm_path = broker.clean_adv(str(llm_response_basic))

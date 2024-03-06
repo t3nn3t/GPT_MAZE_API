@@ -3,7 +3,7 @@ You only use allowed moves outlined in the adjacency. NEVER use moves that aren'
 
 Check if you are at the target point and in which case end your path.
 
-Before outputing the best next move you first output the current position, target point of the maze, and legal moves from your current position. You then pick the best move from one of the legal moves.
+Before outputting the best next move you first output the current position, target point of the maze, and legal moves from your current position. You then pick the best move from one of the legal moves.
 
 You are to output your answers in the following format:
 

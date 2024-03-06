@@ -15,7 +15,7 @@ from google.generativeai import GenerationConfig
 
 class Response_handler:
 
-    def __init__(self, model, prompt):
+    def __init__(self, model, prompt, temperature=1):
 
         self.client = OpenAI()
         self.model = model
@@ -29,6 +29,8 @@ class Response_handler:
         self.prompt = p.read()
         self.default_sys = d.read()
         self.reflexion_prompt = r.read()
+
+        self.temperature = temperature
 
 
     def ask_gpt(self, post_prompt, examples="", reflexion=False, debug=False):
@@ -44,7 +46,7 @@ class Response_handler:
         {"role": "user", "content": (full_prompt)}
         ],
         max_tokens=2000,
-        temperature=1)
+        temperature=self.temperature)
 
         if (debug):
                     print("\nLLM Reponse:")
@@ -66,7 +68,7 @@ class Response_handler:
             {"role": "user", "content": self.reflexion_prompt}
             ],
             max_tokens=2000,
-            temperature=1)
+            temperature=self.temperature)
 
             if (debug):
                     print("\nLLM Reflexion Reponse:")
@@ -79,7 +81,9 @@ class Response_handler:
         return completion.choices[0].message.content
     
 
-    def ask_gemini(self, post_prompt: str, examples="", debug=False) -> str:
+    def ask_gemini(self, post_prompt: str, examples="", reflexion=False, debug=False) -> str:
+        #sleep to not reach api response limit
+        time.sleep(4)
         full_prompt = (self.instruction + "\n" + examples + "\n\n" +self.prompt + post_prompt)
         if debug:
             print("\nAsking Gemini:\n"+(full_prompt)+"\n")
@@ -87,13 +91,31 @@ class Response_handler:
         vertexai.init(project="clear-ranger-415717", location="europe-west2")
         model = GenerativeModel("gemini-1.0-pro")
 
-        
-        response = model.generate_content(full_prompt, generation_config={"temperature":0.0})
+        response = model.generate_content(full_prompt, generation_config={"temperature":self.temperature})
 
-        #sleep to not reach api response limit
-        time.sleep(4)
-        responses = [candidate.content.parts[0].text for candidate in response.candidates]
-        print(responses)
+        print("REFLEXION=" + str(reflexion))
+
+        if (debug):
+            print("\nLLM Reponse:")
+            print(response.candidates[0].content)
+            print("")
+
+        if reflexion:
+            messages = []
+            messages.append(str({'role':response.candidates[0].content.role, 'parts': [response.candidates[0].content.text]}))
+            messages.append(str({'role':'user', 'parts':[self.reflexion_prompt]}))
+            
+            if debug:
+                print("\nAsking Gemini Reflexion:\n"+self.reflexion_prompt+"\n")
+            response_reflexion = model.generate_content(str(messages), generation_config={"temperature":self.temperature})
+
+            if (debug):
+                    print("\nLLM Reflexion Reponse:")
+                    print(response_reflexion.text)
+                    print("")
+
+            return response_reflexion.text
+
         return response.text
 
 
@@ -103,10 +125,8 @@ class Response_handler:
         # Define a regular expression pattern to match coordinates
         pattern = re.compile(r'\((\d+),(\d+)\)')
 
-        # extract all matches
         matches = pattern.findall(str(response))
 
-        # Convert the matches to tuples and store in a list
         coordinates = [(int(x),int(y)) for x, y in matches]
         if (len(coordinates)==0):
             pattern = re.compile(r'\((\d+),\s*(\d+)\)')
