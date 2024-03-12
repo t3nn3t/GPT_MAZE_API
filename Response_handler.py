@@ -67,7 +67,7 @@ class Response_handler:
             {"role": "assistant", "content": completion.choices[0].message.content},
             {"role": "user", "content": self.reflexion_prompt}
             ],
-            max_tokens=2000,
+            max_tokens=1300,
             temperature=self.temperature)
 
             if (debug):
@@ -93,20 +93,20 @@ class Response_handler:
 
         response = model.generate_content(full_prompt, generation_config={"temperature":self.temperature})
 
-        print("REFLEXION=" + str(reflexion))
-
         if (debug):
             print("\nLLM Reponse:")
             print(response.candidates[0].content)
             print("")
 
         if reflexion:
+            time.sleep(4)
             messages = []
             messages.append(str({'role':response.candidates[0].content.role, 'parts': [response.candidates[0].content.text]}))
             messages.append(str({'role':'user', 'parts':[self.reflexion_prompt]}))
             
             if debug:
                 print("\nAsking Gemini Reflexion:\n"+self.reflexion_prompt+"\n")
+
             response_reflexion = model.generate_content(str(messages), generation_config={"temperature":self.temperature})
 
             if (debug):
@@ -171,8 +171,6 @@ class Response_handler:
 
 #Example: Start "(1,3)", connection (1,3) <--> (1,4) next move "(1,4)", connection (1,4) <--> (2,3) End "(2,3)"
     def clean_quoted(self, response):
-        print("cleaning quoted: ")
-        print(response)
         # Define a regular expression pattern to match coordinates
         pattern = r'"\((\d+,\d+)\)"'
         move_chain = re.findall(pattern, response)
@@ -184,3 +182,14 @@ class Response_handler:
         move_chain = "Start "+move_chain
 
         return self.clean_basic(move_chain)
+    
+    def clean_reflexion(self, response):
+        pattern = r"Correct solution:(.*)"
+        move_chain = re.search(pattern, response, re.DOTALL)
+
+        if move_chain is None:
+            print("NO MOVES FROM LLM")
+            return self.clean_basic("(-1,-1)")
+        move_chain = move_chain.group()
+
+        return move_chain

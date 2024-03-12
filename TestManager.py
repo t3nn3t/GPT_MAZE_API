@@ -7,10 +7,12 @@ class TestManager:
         maze_dataset = mazes.get_dataset()
         maze_size = mazes.get_size()
         solved = 0
+        random_solved = 0
         llm_moves = 0
         random_moves = 0
         optimal_moves = 0
         total = len(maze_dataset) * repeats
+        MAX_MOVES = 50
 
         e = open("examples_prefix.txt", "r")
         examples_prefix = e.read()
@@ -18,7 +20,7 @@ class TestManager:
         #prompt files
         basic_prompts = ["system_prompt_astar.txt", "system_prompt_basic.txt", "system_prompt_printfirst.txt"]
         cot_prompts = ["system_prompt_cot.txt"]
-        quoted_prompts = [""]
+        quoted_prompts = ["system_prompt_stepback.txt"]
 
         #prompt type
         pattern = r"system_prompt_(.*?)\.txt"
@@ -48,8 +50,8 @@ class TestManager:
                 else:
                     raise Exception("Error: Supplier not recognised")
                 
-                print("important")
-                print(llm_response_basic)
+                if reflexion:
+                    llm_response_basic = broker.clean_reflexion(str(llm_response_basic))
 
                 if prompt_file in basic_prompts:
                     llm_path = broker.clean_adv(str(llm_response_basic))
@@ -60,12 +62,16 @@ class TestManager:
                 else:
                     raise Exception("Error: Failed to clean response, prompt path not found in prompt types")
                 
-                print("CLEANED PATH")
-                print(llm_path)
+                if debug:
+                    print("CLEANED PATH")
+                    print(llm_path)
 
 
-                random_result = simul.check_random(index, 50)
+                random_result = simul.check_random(index, MAX_MOVES)
                 result = simul.check_paths(llm_path, index)
+
+                if random_result >= MAX_MOVES:
+                    random_solved += 1
 
                 if result > 0:
                     solved += 1
@@ -76,11 +82,13 @@ class TestManager:
                 
         print("")
         print("total: " +str(total))
-        print("sovled: "+ str(solved))
+        print("solved: "+ str(solved))
+        print("random solved: "+ str(random_solved))
 
         score = (solved/total) * 100
+        randscore = (random_solved/total) * 100
 
-        return score, llm_moves, random_moves, optimal_moves
+        return score, llm_moves, random_moves, optimal_moves, randscore
     
 
      

@@ -3,7 +3,8 @@ You only use allowed moves outlined in the adjacency. NEVER use moves that aren'
 
 Check if you are at the target point and in which case end your path.
 
-Before outputting the best next move you first output the current position, target point of the maze, and legal moves from your current position. You then pick the best move from one of the legal moves.
+Before outputting the best next move, you first output the current position, target point of the maze, and legal moves from your current position using the given adjacency list. 
+You then pick the best move to get to the target point from one of the legal moves while making sure to take into consideration your previous moves.
 
 You are to output your answers in the following format:
 
@@ -11,12 +12,12 @@ start "(<column>,<row>)"
 
 current position is (<column>,<row>)
 target is (<column>,<row>)
-legal moves are (<column>,<row>) -> (<column>,<row>), (<column>,<row>) -> (<column>,<row>)
+legal moves are (<column>,<row>) -> (<column>,<row>), (<column>,<row>) -> (<column>,<row>), (<column>,<row>) -> (<column>,<row>)...
 best next move is "(<column>,<row>)"
 
 current position is (<column>,<row>)
 target is (<column>,<row>)
-legal moves are (<column>,<row>) -> (<column>,<row>), (<column>,<row>) -> (<column>,<row>)
+legal moves are (<column>,<row>) -> (<column>,<row>), (<column>,<row>) -> (<column>,<row>), , (<column>,<row>) -> (<column>,<row>)...
 best next move is "(<column>,<row>)"
 
 ...

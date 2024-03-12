@@ -183,7 +183,7 @@ class Visualizer:
         plt.tight_layout()
 
         plt.text(-3.8, 0.8, "SHORTEST PATH", c='black', ha='center')
-        plt.text(-2.36, 0.8, "GPT PATH", c='black', ha='center')
+        plt.text(-2.36, 0.8, "LLM PATH", c='black', ha='center')
 
         plt.draw()
 

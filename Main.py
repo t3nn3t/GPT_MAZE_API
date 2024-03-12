@@ -34,7 +34,7 @@ def run_single(index, size, supplier, model, prompt, reflexion=False, debug=True
   if str.lower(supplier)=="openai":
     response_basic = broker.ask_gpt(prompt_path, reflexion=reflexion, debug=debug)
   elif str.lower(supplier)=="google":
-    response_basic = broker.ask_gemini(prompt_path, debug=True)
+    response_basic = broker.ask_gemini(prompt_path,reflexion=reflexion, debug=debug)
   else:
     raise Exception("Error: Supplier not recognised")
 
@@ -76,11 +76,10 @@ def run_test(n_mazes, size, repeats, supplier, model, prompt, shots, temperature
 
 #run_single(index=119,size=4, supplier = "openai", model = "gpt-3.5-turbo-0125", prompt = "system_prompt_cot.txt", reflexion=True)
 
-  
+test_score, gpt_total_moves, random_total_moves, opt_moves, rand_score = run_test(n_mazes=15, size=4, repeats=3, supplier = "openai", model = "gpt-3.5-turbo-0125", prompt = "system_prompt_cot.txt", shots=0, temperature=1.0,reflexion=True, debug=True)
 
-test_score, gpt_total_moves, random_total_moves, opt_moves = run_test(n_mazes=1, size=3, repeats=1, supplier = "google", model = "gemini-1.0-pro", prompt = "system_prompt_cot.txt", shots=0, temperature=1.0,reflexion=True, debug=True)
-
-print(str(round(test_score,2))+"%")
+print("Solve rate: "+str(round(test_score,2))+"%")
+print("Random solve rate: "+str(round(rand_score,2))+"%")
 print("LLM moves: "+ str(gpt_total_moves))
 print("random moves: "+ str(random_total_moves))
 print("optimal moves: "+ str(opt_moves))
