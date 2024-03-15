@@ -117,6 +117,9 @@ class Response_handler:
             return response_reflexion.text
 
         return response.text
+    
+
+    #ADD YOUR LLM REPLY FUNCTION HERE IN THE SAME INPUT OUTPUT FORMAT
 
 
 

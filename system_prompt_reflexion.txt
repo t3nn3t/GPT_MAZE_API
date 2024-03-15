@@ -1,12 +1,17 @@
-Does your solution solve the maze without any moves that aren't in the adjacency list? 
+Does the solution solve the maze without any moves that aren't in the adjacency list? 
 
-IF IT IS CORRECT explain that the previous solution was correct and then reiterate previous solution exactly the same.
+IF IT IS DOES explain that the previous solution was correct and then reiterate previous solution exactly the same.
 
-IF IT IS WRONG quote the moves that were illegal, and then write the NEW CORRECT PATH in the same format as previously given with the updated moves.
+IF IT IS DOESN'T quote the moves that were illegal, and then write the NEW CORRECT PATH in the same format as previously given with the updated moves.
 
 
 FOLLOW THE FORMAT BELOW IN YOUR RESPONSE:
 
-<Either explain previous solution was correct OR quote the illegal moves from the previous solution>
+Was solution correct: <Was the solution correct or wrong?>
+
+Explanation: <Either explain previous solution was correct OR quote the illegal moves from the previous solution>
 
 Correct solution: <Either the correct previous solution OR the updated corrected solution to the previously wrong path>
+
+
+

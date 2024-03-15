@@ -12,7 +12,7 @@ class TestManager:
         random_moves = 0
         optimal_moves = 0
         total = len(maze_dataset) * repeats
-        MAX_MOVES = 50
+        MAX_MOVES = 25
 
         e = open("examples_prefix.txt", "r")
         examples_prefix = e.read()
@@ -70,15 +70,19 @@ class TestManager:
                 random_result = simul.check_random(index, MAX_MOVES)
                 result = simul.check_paths(llm_path, index)
 
-                if random_result >= MAX_MOVES:
+                if random_result < MAX_MOVES:
                     random_solved += 1
+                    random_moves += random_result
 
+                
                 if result > 0:
                     solved += 1
-                    llm_moves += result
-                    random_moves += random_result
                     optimal_moves += optimal_path
+                    llm_moves += result
+                    
                 print("Mazes solved: "+ str(solved))
+                print("random agent solved: "+ str(random_solved))
+                print("")
                 
         print("")
         print("total: " +str(total))

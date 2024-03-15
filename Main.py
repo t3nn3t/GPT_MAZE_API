@@ -74,9 +74,10 @@ def run_test(n_mazes, size, repeats, supplier, model, prompt, shots, temperature
 #model = "gpt-3.5-turbo-0613", "gpt-3.5-turbo-0125", "gpt-4" | "gemini-1.0-pro"
 #shots = 0,1,2,3,4,5
 
-#run_single(index=119,size=4, supplier = "openai", model = "gpt-3.5-turbo-0125", prompt = "system_prompt_cot.txt", reflexion=True)
+#run_single(index=1,size=5, supplier = "openai", model = "gpt-3.5-turbo-0125", prompt = "system_prompt_cot.txt", reflexion=False)
 
-test_score, gpt_total_moves, random_total_moves, opt_moves, rand_score = run_test(n_mazes=15, size=4, repeats=3, supplier = "openai", model = "gpt-3.5-turbo-0125", prompt = "system_prompt_cot.txt", shots=0, temperature=1.0,reflexion=True, debug=True)
+
+test_score, gpt_total_moves, random_total_moves, opt_moves, rand_score = run_test(n_mazes=50, size=4, repeats=1, supplier = "openai", model = "gpt-3.5-turbo-0125", prompt = "system_prompt_basic.txt", shots=0, temperature=1.0,reflexion=False, debug=False)
 
 print("Solve rate: "+str(round(test_score,2))+"%")
 print("Random solve rate: "+str(round(rand_score,2))+"%")
