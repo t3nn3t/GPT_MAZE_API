@@ -134,10 +134,8 @@ class Response_handler:
         if (len(coordinates)==0):
             pattern = re.compile(r'\((\d+),\s*(\d+)\)')
 
-            # extract all matches
             matches = pattern.findall(str(response))
 
-            # Convert the matches to tuples and store in a list
             coordinates = [(int(x),int(y)) for x, y in matches]
         return coordinates
     

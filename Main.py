@@ -61,13 +61,13 @@ def test_llm(prompt):
   print ("LLM Response: "+str(response_basic))
 
 
-def run_test(n_mazes, size, repeats, supplier, model, prompt, shots, temperature, reflexion, debug):
+def run_test(n_mazes, size, repeats, supplier, model, prompt, shots, temperature, reflexion, debug, random_max=25):
   broker = rh(model = model, prompt = prompt, temperature=temperature)
   test_mazes = Maze(size,n_mazes)
 
   simulation = Visualizer(test_mazes)
 
-  return tm.test(test_mazes, repeats, simulation, broker, supplier=supplier, prompt_file=prompt, shots=shots, reflexion=reflexion, debug=debug)
+  return tm.test(test_mazes, repeats, simulation, broker, supplier=supplier, prompt_file=prompt, shots=shots, reflexion=reflexion, debug=debug, random_max=random_max)
 
 
 #supplier = "openai", "google"
@@ -77,18 +77,17 @@ def run_test(n_mazes, size, repeats, supplier, model, prompt, shots, temperature
 #run_single(index=1,size=5, supplier = "openai", model = "gpt-3.5-turbo-0125", prompt = "system_prompt_cot.txt", reflexion=False)
 
 
-test_score, gpt_total_moves, random_total_moves, opt_moves, rand_score = run_test(n_mazes=50, size=4, repeats=1, supplier = "openai", model = "gpt-3.5-turbo-0125", prompt = "system_prompt_basic.txt", shots=0, temperature=1.0,reflexion=False, debug=False)
-
-print("Solve rate: "+str(round(test_score,2))+"%")
-print("Random solve rate: "+str(round(rand_score,2))+"%")
-print("LLM moves: "+ str(gpt_total_moves))
-print("random moves: "+ str(random_total_moves))
-print("optimal moves: "+ str(opt_moves))
+test_score, gpt_total_moves, random_total_moves, opt_moves_model, opt_moves_random, rand_score = run_test(n_mazes=100, size=5, repeats=1, supplier = "google", model = "gpt-3.5-turbo-0125", prompt = "system_prompt_basic.txt", shots=0, temperature=0.0,reflexion=False, debug=False)
 
 print("\n")
 
-print("extra LLM moves: "+ str(gpt_total_moves - opt_moves))
-print("extra random moves: "+ str(random_total_moves - opt_moves))
+print("Solve rate: "+str(round(test_score,2))+"%")
+print("Random solve rate: "+str(round(rand_score,2))+"%")
+
+print("\n")
+
+print("extra LLM moves: "+ str(gpt_total_moves - opt_moves_model))
+print("extra random moves: "+ str(random_total_moves - opt_moves_random))
 
 print("\n")
 

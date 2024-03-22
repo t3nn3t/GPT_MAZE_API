@@ -2,7 +2,7 @@ import re
 
 class TestManager:
 
-    def test(mazes, repeats, simul, broker, supplier, prompt_file, shots, reflexion, debug):
+    def test(mazes, repeats, simul, broker, supplier, prompt_file, shots, reflexion, debug, random_max):
 
         maze_dataset = mazes.get_dataset()
         maze_size = mazes.get_size()
@@ -11,8 +11,9 @@ class TestManager:
         llm_moves = 0
         random_moves = 0
         optimal_moves = 0
+        optimal_moves_random = 0
         total = len(maze_dataset) * repeats
-        MAX_MOVES = 25
+        MAX_MOVES = random_max
 
         e = open("examples_prefix.txt", "r")
         examples_prefix = e.read()
@@ -73,6 +74,7 @@ class TestManager:
                 if random_result < MAX_MOVES:
                     random_solved += 1
                     random_moves += random_result
+                    optimal_moves_random += optimal_path
 
                 
                 if result > 0:
@@ -92,7 +94,7 @@ class TestManager:
         score = (solved/total) * 100
         randscore = (random_solved/total) * 100
 
-        return score, llm_moves, random_moves, optimal_moves, randscore
+        return score, llm_moves, random_moves, optimal_moves,optimal_moves_random, randscore
     
 
      

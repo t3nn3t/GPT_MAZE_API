@@ -9,8 +9,6 @@ import numpy as np
 from matplotlib import transforms
 from matplotlib.transforms import Affine2D, Transform
 
-
-
 from maze_dataset.plotting import MazePlot
 from maze_dataset.tokenization import MazeTokenizer, TokenizationMode
 from maze_dataset.dataset.rasterized import process_maze_rasterized_input_target

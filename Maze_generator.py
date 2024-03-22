@@ -16,6 +16,12 @@ from maze_dataset.tokenization import MazeTokenizer, TokenizationMode
 from maze_dataset.plotting.print_tokens import display_color_maze_tokens_AOTP, color_maze_tokens_AOTP
 from maze_dataset.dataset.rasterized import process_maze_rasterized_input_target
 
+"""
+ Code adapted from https://pypi.org/project/maze-dataset/0.4.5/
+ maze-dataset 0.4.5
+ v 0.4.5
+ Dec 5, 2023
+"""
 
 # check the configs
 print(MAZE_DATASET_CONFIGS.keys())
