@@ -83,7 +83,7 @@ class Response_handler:
 
     def ask_gemini(self, post_prompt: str, examples="", reflexion=False, debug=False) -> str:
         #sleep to not reach api response limit
-        time.sleep(4)
+        time.sleep(8)
         full_prompt = (self.instruction + "\n" + examples + "\n\n" +self.prompt + post_prompt)
         if debug:
             print("\nAsking Gemini:\n"+(full_prompt)+"\n")

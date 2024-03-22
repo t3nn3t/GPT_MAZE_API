@@ -1,4 +1,4 @@
-# Maze Solver Project
+# LLM Maze Solving Benchmark
 
 ## Overview
 This project is designed to integrate maze-solving capabilities with language models from OpenAI and potentially other providers. It uses various prompts and language models to generate solutions for mazes, visualizes these solutions, and compares them to optimal and random paths.
@@ -69,7 +69,7 @@ Running the visualiser will open a pop up window using MatPlotLib. This window w
 
 Running tests will return the solve rate of the model, the solve rate of a random agent, the extra moves used by the model over the optimal solution, and the extra moves used by the random agent over the optimal solution
 
-If Debug is enable the prompts sent to the model aswell as the reponses from the model will be printed in the terminal.
+If `debug` is enable the prompts sent to the model aswell as the reponses from the model will be printed in the terminal.
 
 ## Example
 Here's an example of running a test with the project:

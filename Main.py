@@ -77,7 +77,7 @@ def run_test(n_mazes, size, repeats, supplier, model, prompt, shots, temperature
 #run_single(index=1,size=5, supplier = "openai", model = "gpt-3.5-turbo-0125", prompt = "system_prompt_cot.txt", reflexion=False)
 
 
-test_score, gpt_total_moves, random_total_moves, opt_moves_model, opt_moves_random, rand_score = run_test(n_mazes=100, size=5, repeats=1, supplier = "google", model = "gpt-3.5-turbo-0125", prompt = "system_prompt_basic.txt", shots=0, temperature=0.0,reflexion=False, debug=False)
+test_score, gpt_total_moves, random_total_moves, opt_moves_model, opt_moves_random, rand_score = run_test(n_mazes=100, size=5, repeats=1, supplier = "google", model = "gemini-1.0-pro", prompt = "system_prompt_basic.txt", shots=0, temperature=0.0,reflexion=False, debug=False)
 
 print("\n")
 
