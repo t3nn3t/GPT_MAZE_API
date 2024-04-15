@@ -5,7 +5,7 @@ IF IT IS DOES explain that the previous solution was correct and then reiterate 
 IF IT IS DOESN'T quote the moves that were illegal, and then write the NEW CORRECT PATH in the same format as previously given with the updated moves.
 
 
-FOLLOW THE FORMAT BELOW IN YOUR RESPONSE:
+You are to output your answers in the following format:
 
 Was solution correct: <Was the solution correct or wrong?>
 

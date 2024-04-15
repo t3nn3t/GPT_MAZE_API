@@ -23,73 +23,85 @@ class Response_handler:
         f = open(prompt, "r")
         p = open("user_prompt_v1.0", "r")
         d = open("default_sys_prompt.txt", "r")
-        r = open("system_prompt_reflexion.txt", "r")
+        r = open("system_prompt_self_refine_improved.txt", "r")
 
         self.instruction = f.read()
         self.prompt = p.read()
         self.default_sys = d.read()
-        self.reflexion_prompt = r.read()
+        self.self_refine_prompt = r.read()
 
         self.temperature = temperature
 
 
-    def ask_gpt(self, post_prompt, examples="", reflexion=False, debug=False):
-        full_prompt = (self.instruction + "\n" + examples + "\n\n" + self.prompt + post_prompt)
+    def ask_gpt(self, post_prompt, examples="", self_refine=False, debug=False):
+        if (examples==""):
+            full_prompt = (self.instruction + "\n" + examples + "\n\n" +self.prompt + post_prompt)
+        else:
+            full_prompt = (examples + "\n\n" +self.prompt + post_prompt)
         if debug:
             print("\nAsking ChatGPT:\n"+full_prompt+"\n")
         
         #message 1
-        completion = self.client.chat.completions.create(
-        model=self.model,
-        messages=[
-        {"role": "system", "content": self.default_sys},
-        {"role": "user", "content": (full_prompt)}
-        ],
-        max_tokens=2000,
-        temperature=self.temperature)
+        try:
+            completion = self.client.chat.completions.create(
+            model=self.model,
+            messages=[
+            {"role": "system", "content": self.default_sys},
+            {"role": "user", "content": (full_prompt)}
+            ],
+            max_tokens=1000,
+            temperature=self.temperature)
+        except:
+            print("LLM Response request failed")
+            return ("")
+
 
         if (debug):
                     print("\nLLM Reponse:")
                     print(completion.choices[0].message.content)
                     print("")
 
-        if (reflexion):
-            #message 2 (Reflexion)
+        if (self_refine):
+            #message 2 (self_refine)
 
             if debug:
-                print("\nAsking ChatGPT Reflexion:\n"+self.reflexion_prompt+"\n")
+                print("\nAsking ChatGPT self_refine:\n"+self.self_refine_prompt+"\n")
 
-            completion_reflexion = self.client.chat.completions.create(
+            completion_self_refine = self.client.chat.completions.create(
             model=self.model,
             messages=[
             {"role": "system", "content": self.default_sys},
             {"role": "user", "content": (full_prompt)},
             {"role": "assistant", "content": completion.choices[0].message.content},
-            {"role": "user", "content": self.reflexion_prompt}
+            {"role": "user", "content": self.self_refine_prompt}
             ],
-            max_tokens=1300,
+            max_tokens=1000,
             temperature=self.temperature)
 
             if (debug):
-                    print("\nLLM Reflexion Reponse:")
-                    print(completion_reflexion.choices[0].message.content)
+                    print("\nLLM self_refine Reponse:")
+                    print(completion_self_refine.choices[0].message.content)
                     print("")
 
-            return completion_reflexion.choices[0].message.content
+            return completion_self_refine.choices[0].message.content
         
 
         return completion.choices[0].message.content
     
 
-    def ask_gemini(self, post_prompt: str, examples="", reflexion=False, debug=False) -> str:
+    def ask_gemini(self, post_prompt: str, examples="", self_refine=False, debug=False) -> str:
         #sleep to not reach api response limit
         time.sleep(8)
-        full_prompt = (self.instruction + "\n" + examples + "\n\n" +self.prompt + post_prompt)
+        #remove description if few shot examples are being used
+        if (examples==""):
+            full_prompt = (self.instruction + "\n" + examples + "\n\n" +self.prompt + post_prompt)
+        else:
+            full_prompt = (examples + "\n\n" +self.prompt + post_prompt)
         if debug:
             print("\nAsking Gemini:\n"+(full_prompt)+"\n")
 
         vertexai.init(project="clear-ranger-415717", location="europe-west2")
-        model = GenerativeModel("gemini-1.0-pro")
+        model = GenerativeModel(self.model)
 
         response = model.generate_content(full_prompt, generation_config={"temperature":self.temperature})
 
@@ -98,23 +110,29 @@ class Response_handler:
             print(response.candidates[0].content)
             print("")
 
-        if reflexion:
+        if self_refine:
             time.sleep(4)
-            messages = []
-            messages.append(str({'role':response.candidates[0].content.role, 'parts': [response.candidates[0].content.text]}))
-            messages.append(str({'role':'user', 'parts':[self.reflexion_prompt]}))
+            messages = ""
+            messages += ("User: "+ str(full_prompt)+"\n\n")
+            messages += ("Model: "+ str(response.candidates[0].content.text)+"\n\n")
+            messages += ("User: "+ str(self.self_refine_prompt)+"\n\n")
             
             if debug:
-                print("\nAsking Gemini Reflexion:\n"+self.reflexion_prompt+"\n")
+                #print("\nAsking Gemini self_refine:\n"+self.self_refine_prompt+"\n")
+                print("\nAsking Gemini self_refine:\n"+str(messages)+"\n")
 
-            response_reflexion = model.generate_content(str(messages), generation_config={"temperature":self.temperature})
+            response_self_refine = model.generate_content(str(messages), generation_config={"temperature":self.temperature})
 
             if (debug):
-                    print("\nLLM Reflexion Reponse:")
-                    print(response_reflexion.text)
+                    print("\nLLM self_refine Reponse:")
+                    print(response_self_refine.text)
                     print("")
 
-            return response_reflexion.text
+            try:
+                return response_self_refine.text
+            except:
+                print("LLM Response request failed")
+                return("")
 
         return response.text
     
@@ -184,7 +202,7 @@ class Response_handler:
 
         return self.clean_basic(move_chain)
     
-    def clean_reflexion(self, response):
+    def clean_self_refine(self, response):
         pattern = r"Correct solution:(.*)"
         move_chain = re.search(pattern, response, re.DOTALL)
 

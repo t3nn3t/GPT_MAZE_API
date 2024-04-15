@@ -97,3 +97,15 @@ print("Extra random moves: " + str(random_total_moves - opt_moves_random))
 This script will run a maze-solving test using the OpenAI GPT-3.5 0125 model and provide its performance metrics 
 
 ## Adding Your Own Models
+
+### Connecting the Model
+First, create a function within the `Response_handler.py` class.
+
+The function needs the following arguments:
+
+`post_prompt`: String, the prompt used to query the model
+`examples`: String, any few shot examples that will be added to the prompt
+`self_refine`: Boolean, whether Self Refine technique should be used
+`debug`: Boolean, whether inputs/outputs should be printed to terminal
+
+The function should return a string of the raw text response of the model.

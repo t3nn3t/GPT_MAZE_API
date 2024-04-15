@@ -1,0 +1,7 @@
+output your answers in the following format:
+
+<OUTPUT each individual move and OUTPUT Legal/Illegal if it exists within the provided adjacency list>
+
+Does the solution contain any illegal moves?: <Yes/No>
+
+Correct solution: <output a legal path through the maze that follows the adjacency list>

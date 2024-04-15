@@ -1,0 +1,13 @@
+Your goal is to solve mazes, given to you in the form of an adjacency list, to get from an origin point to a target point in the least moves possible.
+
+You must only used moves that are in the adjacency list and not use any moves that are not on the list.
+
+After each move check if you are at the target point and if so end the path.
+
+Before answering visualise the maze in your head and discuss what strategies and thoughts you have about it, then give your path.
+
+You are to output your answers in the following format:
+
+Thoughts: <visualise the maze in your head and discuss what strategies and thoughts you have>
+
+Answer: Start (<column>,<row>), next move (<column>,<row>), next move (<column>,<row>), next move (<column>,<row>)..., End (<column>,<row>)
