@@ -74,11 +74,11 @@ def run_test(n_mazes, size, repeats, supplier, model, prompt, shots, temperature
 #model = "gpt-3.5-turbo-0613", "gpt-3.5-turbo-0125", "gpt-4" | "gemini-1.0-pro"
 #shots = 0,1,2,3,4,5
 
-#run_single(index=3,size=4, supplier = "openai", model = "gpt-3.5-turbo-0125", prompt = "system_prompt_cot.txt", self_refine=False)
+run_single(index=3,size=4, supplier = "openai", model = "gpt-3.5-turbo-0125", prompt = "system_prompt_cot.txt", self_refine=False)
 
 
 #test_score, gpt_total_moves, random_total_moves, opt_moves_model, opt_moves_random, rand_score = run_test(n_mazes=100, size=4, repeats=1, supplier = "openai", model = "gpt-3.5-turbo-0613", prompt = "system_prompt_cot.txt", shots=2, temperature=0.2,self_refine=True, debug=True)
-test_score2, gpt_total_moves2, random_total_moves2, opt_moves_model2, opt_moves_random2, rand_score2 = run_test(n_mazes=100, size=4, repeats=1, supplier = "google", model = "gemini-1.5-pro-preview-0409", prompt = "system_prompt_cot.txt", shots=0, temperature=0.0,self_refine=False, debug=True)
+#test_score2, gpt_total_moves2, random_total_moves2, opt_moves_model2, opt_moves_random2, rand_score2 = run_test(n_mazes=100, size=4, repeats=1, supplier = "google", model = "gemini-1.5-pro-preview-0409", prompt = "system_prompt_cot.txt", shots=0, temperature=0.0,self_refine=False, debug=True)
 #test_score3, gpt_total_moves3, random_total_moves3, opt_moves_model3, opt_moves_random3, rand_score3 = run_test(n_mazes=100, size=4, repeats=1, supplier = "openai", model = "gpt-4-0125-preview", prompt = "system_prompt_cot.txt", shots=2, temperature=0.2,self_refine=True, debug=False)
 #print("extra LLM moves: "+ str(gpt_total_moves - opt_moves_model))
 #test_score4, gpt_total_moves4, random_total_moves4, opt_moves_model4, opt_moves_random4, rand_score4 = run_test(n_mazes=100, size=4, repeats=1, supplier = "google", model = "gemini-1.0-pro", prompt = "system_prompt_basic.txt", shots=0, temperature=0.0,self_refine=True, debug=True)
@@ -91,8 +91,8 @@ print("\n")
 
 print("\n")
 
-print("Solve rate 2: "+str(round(test_score2,2))+"%")
-print("extra LLM moves 2: "+ str(gpt_total_moves2 - opt_moves_model2))
+#print("Solve rate 2: "+str(round(test_score2,2))+"%")
+#print("extra LLM moves 2: "+ str(gpt_total_moves2 - opt_moves_model2))
 
 
 print("\n")
