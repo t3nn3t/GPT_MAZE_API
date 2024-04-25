@@ -5,16 +5,6 @@ from Visualizer import Visualizer
 from Response_handler import Response_handler as rh
 from TestManager import TestManager as tm
 
-# TO DO
-# - Make Random path bot as a control
-# - Improve Prompts to get best result
-# - Increase X shot testing 
-
-
-
-#3: 1,3,4,6,7,9
-#4: 2,4,8?,9,
-#5: 5,9
 def run_single(index, size, supplier, model, prompt, self_refine=False, debug=True):
 
   broker = rh(model = model, prompt = prompt)
@@ -74,7 +64,7 @@ def run_test(n_mazes, size, repeats, supplier, model, prompt, shots, temperature
 #model = "gpt-3.5-turbo-0613", "gpt-3.5-turbo-0125", "gpt-4" | "gemini-1.0-pro"
 #shots = 0,1,2,3,4,5
 
-run_single(index=3,size=4, supplier = "openai", model = "gpt-3.5-turbo-0125", prompt = "system_prompt_cot.txt", self_refine=False)
+run_single(index=100,size=4, supplier = "openai", model = "gpt-3.5-turbo-0125", prompt = "system_prompt_cot.txt", self_refine=False)
 
 
 #test_score, gpt_total_moves, random_total_moves, opt_moves_model, opt_moves_random, rand_score = run_test(n_mazes=100, size=4, repeats=1, supplier = "openai", model = "gpt-3.5-turbo-0613", prompt = "system_prompt_cot.txt", shots=2, temperature=0.2,self_refine=True, debug=True)
@@ -124,10 +114,7 @@ print("\n")
 print("\n")
 
 
-
 #test_llm("what is the meaning of life?")
-#response_basic_fake = "Start (1,3), next move (1,4), next move (4,3), next move (4,4), End (2,3)"
-#gpt_path_fake = [(1,3),(0,3),(0,2),(1,2),(2,2),(2,1), (2,0), (3,0), (4,0), (4,1), (4,2), (4,3), (4,4), (3,4), (2,4), (2,3)]
 
 
 
