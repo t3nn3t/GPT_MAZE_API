@@ -103,9 +103,16 @@ First, create a function within the `Response_handler.py` class.
 
 The function needs the following arguments:
 
-`post_prompt`: String, the prompt used to query the model
-`examples`: String, any few shot examples that will be added to the prompt
-`self_refine`: Boolean, whether Self Refine technique should be used
-`debug`: Boolean, whether inputs/outputs should be printed to terminal
+- `post_prompt`: String, the prompt used to query the model
+- `examples`: String, any few shot examples that will be added to the prompt
+- `self_refine`: Boolean, whether Self Refine technique should be used
+- `debug`: Boolean, whether inputs/outputs should be printed to terminal
 
 The function should return a string of the raw text response of the model.
+
+Finally add the model in the `TestManager.py` class in the following format:
+
+```python
+if str.lower(supplier)=="<YOUR MODEL>":
+                    llm_response_basic = broker.<YOUR FUNCTION>(prompt_path, examples, self_refine, debug)
+```
