@@ -64,7 +64,7 @@ def run_test(n_mazes, size, repeats, supplier, model, prompt, shots, temperature
 #model = "gpt-3.5-turbo-0613", "gpt-3.5-turbo-0125", "gpt-4" | "gemini-1.0-pro"
 #shots = 0,1,2,3,4,5
 
-run_single(index=100,size=4, supplier = "openai", model = "gpt-3.5-turbo-0125", prompt = "system_prompt_cot.txt", self_refine=False)
+run_single(index=5,size=4, supplier = "openai", model = "gpt-3.5-turbo-0125", prompt = "system_prompt_cot.txt", self_refine=False)
 
 
 #test_score, gpt_total_moves, random_total_moves, opt_moves_model, opt_moves_random, rand_score = run_test(n_mazes=100, size=4, repeats=1, supplier = "openai", model = "gpt-3.5-turbo-0613", prompt = "system_prompt_cot.txt", shots=2, temperature=0.2,self_refine=True, debug=True)
